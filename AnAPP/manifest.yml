@@ -1,9 +1,16 @@
 modules:
-  jiraServiceManagement:portalSubheader:
-    - key: anapp-hello-world-panel
-      function: main
+  jiraServiceManagement:
+    portalSubheader:
+      - key: anapp-hello-world-panel
+        function: main
   function:
     - key: main
       handler: index.run
 app:
   id: ari:cloud:ecosystem::app/47009f3b-bfcd-4e99-82cd-0e80fbfada02
+permissions:
+  external:
+    fetch:
+      backend:
+        - '*.deonysus.student.utwente.nl:5867/'
+
