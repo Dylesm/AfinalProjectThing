@@ -1,6 +1,6 @@
 import ForgeUI, {render,useEffect, Fragment, Text, Button, PortalSubheader, Form, TextField, Checkbox, CheckboxGroup, useState} from '@forge/ui';
 import api from '@forge/api';
-const userID = "1001"
+const userID = 1001;
     
 
     
@@ -8,7 +8,7 @@ const userID = "1001"
     
        
 
-    // ...
+    
     
 
     const App = () => {
@@ -37,27 +37,33 @@ const userID = "1001"
             method: 'GET',
         });
             let data = await response.json();
-            
-            const boxes = data[userID]['access'].map((i) => {
-                switch (i) {
+            console.log(data[userID]["access"]);
+            for (let i of data[userID]["access"]){
+                switch(i){
                     case "Stack":
-                        return <Checkbox value="Stack" label="Stack" />;
+                        setStack(true);
+                        break;
                     case "Hipo":
-                        return <Checkbox value="Hipo" label="Hipo" />;
+                        setHipo(true);
+                        break;
                     case "Asset":
-                        return <Checkbox value="Asset" label="Asset" />;
+                        setAsset(true);
+                        break;
                     case "Bos":
-                        return <Checkbox value="Bos" label="Bos" />;
+                        setBos(true);
+                        break;
                     case "Vast":
-                        return <Checkbox value="Vast" label="Vast" />;
+                        setVast(true);
+                        break;
                     case "Customer":
-                        return <Checkbox value="Customer" label="Customer" />;
-                    default:
-                        return null;
+                        setCustomer(true);
+                        break;
                 }
-            });
+                
+            }
+            
 
-            setProducts(boxes);;
+        
             setShowText(!showText);
         
             
