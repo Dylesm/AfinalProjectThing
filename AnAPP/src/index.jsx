@@ -12,30 +12,62 @@ const userID = "1001"
     
 
     const App = () => {
+
+
+        const [Stack, setStack] = useState(false);
+        const [Hipo, setHipo] = useState(false);
+        const [Asset, setAsset] = useState(false);
+        const [bos, setBos] = useState(false);
+        const [Vast, setVast] = useState(false);
+        const [Customer, setCustomer] = useState(false);
+
         const [username, setUsername] = useState('');
         const [products, setProducts] = useState([]);
         const [showText, setShowText] = useState(true);
+
+        const test = ['test1', 'test2']
         
         
+        
+        
+
         let variable = true
         async function getRequester() {
             const response = await api.fetch('https://bartgeugies.com/', {
             method: 'GET',
         });
+            let data = await response.json();
             
-            await setUsername("Bart");
-            console.log( await response.json());
+            const boxes = data[userID]['access'].map((i) => {
+                switch (i) {
+                    case "Stack":
+                        return <Checkbox value="Stack" label="Stack" />;
+                    case "Hipo":
+                        return <Checkbox value="Hipo" label="Hipo" />;
+                    case "Asset":
+                        return <Checkbox value="Asset" label="Asset" />;
+                    case "Bos":
+                        return <Checkbox value="Bos" label="Bos" />;
+                    case "Vast":
+                        return <Checkbox value="Vast" label="Vast" />;
+                    case "Customer":
+                        return <Checkbox value="Customer" label="Customer" />;
+                    default:
+                        return null;
+                }
+            });
 
-            const boxes = [<Checkbox value="confluence" label="conclufecnce" />];
-        
-            setProducts(boxes);
+            setProducts(boxes);;
             setShowText(!showText);
         
-            console.log(products)
+            
         
 
         }
         
+        async function testFunc() {
+            return test[0]
+        }
         
         const formData = {
             username: '',
@@ -56,20 +88,21 @@ const userID = "1001"
             <Fragment>
                 <Text>This is my app! i have no idea if this works</Text>
                 <Button text="CLICK" onClick={getRequester}/>
-                <Button text="CLICK" onClick={variable = !variable}/>
+                
                 <Text>Hello this is a text</Text>
                 {showText && <Text>Hello this is a text</Text>}
                 <Form onSubmit={handleFormSubmit}>
                     <TextField id="hello" name="username" label={username} value={username} onChange={setUsername} />
                     <CheckboxGroup name="products" label="Products" children={products} onChange={setProducts} >
-                        {variable && <Checkbox value="confluence" label="Stack" />}
-                        {showText && <Checkbox value="confluence" label="Hipo" />}
-                        {showText && <Checkbox value="confluence" label="Asset management" />}        
-                        {showText && <Checkbox value="confluence" label="BOS" />}
-                        {showText && <Checkbox value="confluence" label="Vast" />}
-                        {showText && <Checkbox value="confluence" label="CustomerPortal" />}
+                        {Stack && <Checkbox value="confluence" label="Stack" />}
+                        {Hipo && <Checkbox value="confluence" label="Hipo" />}
+                        {Asset && <Checkbox value="confluence" label="Asset management" />}        
+                        {bos && <Checkbox value="confluence" label="BOS" />}
+                        {Vast && <Checkbox value="confluence" label="Vast" />}
+                        {Customer && <Checkbox value="confluence" label="CustomerPortal" />}
                         
                     </CheckboxGroup>
+                    
                 </Form>
                 
             </Fragment>
@@ -80,6 +113,7 @@ const userID = "1001"
 
 
 export const run = render(
+    
     <PortalSubheader>
         <App />
     </PortalSubheader>
