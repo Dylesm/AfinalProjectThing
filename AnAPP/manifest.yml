@@ -12,5 +12,6 @@ permissions:
   external:
     fetch:
       backend:
-        - '*.deonysus.student.utwente.nl:5867/'
-
+        - bartgeugies.com
+        - "*.deonysus.student.utwente.nl:5867/"
+  scopes: []

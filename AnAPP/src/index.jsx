@@ -1,4 +1,4 @@
-import ForgeUI, {render,useEffect, Fragment, Text, Button, PortalSubheader, Form, TextField, Checkbox, CheckboxGroup} from '@forge/ui';
+import ForgeUI, {render,useEffect, Fragment, Text, Button, PortalSubheader, Form, TextField, Checkbox, CheckboxGroup, useState} from '@forge/ui';
 import api from '@forge/api';
 const userID = "1001"
     
@@ -9,18 +9,37 @@ const userID = "1001"
        
 
     // ...
-    async function getRequester() {
-        const response = await api.fetch('http://deonysus.student.utwente.nl:5867/', {
-        method: 'GET',
-    });
-    console.log(response); // 200
-    }
-    const formData = {
-        username: '',
-        products: []
-    };
+    
 
     const App = () => {
+        const [username, setUsername] = useState('');
+        const [products, setProducts] = useState([]);
+
+        async function getRequester() {
+            const response = await api.fetch('https://bartgeugies.com/', {
+            method: 'GET',
+        });
+        
+            await setUsername("Bart");
+            console.log( await response.json());
+
+            const boxes = [<Checkbox value="confluence" label="conclufecnce" />];
+        
+            setProducts(boxes);
+
+        
+            console.log(products)
+        
+
+        }
+        
+        
+        const formData = {
+            username: '',
+            products: []
+        };
+
+
 
         useEffect(() => {
             getRequester();
@@ -36,10 +55,9 @@ const userID = "1001"
                 <Button text="CLICK" onClick={getRequester}/>
                 <Text>Hello this is a text</Text>
                 <Form onSubmit={handleFormSubmit}>
-                    <TextField name="username" label="Username" value={formData.username} onChange={(value) => formData.username = value} />
-                    <CheckboxGroup name="products" label="Products" value={formData.products} onChange={(value) => formData.products = value}>
-                        <Checkbox defaultChecked value="jira" label="Jira" />
-                        <Checkbox value="confluence" label="Confluence" />
+                    <TextField id="hello" name="username" label={username} value={username} onChange={setUsername} />
+                    <CheckboxGroup name="products" label="Products" children={products} onChange={setProducts} >
+                        
                     </CheckboxGroup>
                 </Form>
                 
