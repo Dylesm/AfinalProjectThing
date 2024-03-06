@@ -186,7 +186,7 @@ console.log(await response.json());
                 <Text>This is my app! i have no idea if this works</Text>
                 <Button text="CLICK" onClick={connectionTry}/>
                 
-                <Text>Hello this is a text</Text>
+                <Text>Hello this is a text,dimi</Text>
                 {showText && <Text>Hello this is a text</Text>}
                 <Form onSubmit={handleFormSubmit}>
                     <TextField id="hello" name="username" label={username} value={username} onChange={setUsername} />
