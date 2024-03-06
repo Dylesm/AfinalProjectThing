@@ -5,7 +5,6 @@ modules:
       title: react-app
       resolver:
         function: resolver
-      viewportSize: medium
   function:
     - key: resolver
       handler: index.handler
@@ -14,3 +13,18 @@ resources:
     path: static/hello-world/build
 app:
   id: ari:cloud:ecosystem::app/659d2c90-80a2-488e-83a2-49798582b9cb
+permissions:
+  scopes:
+    - read:jira-work
+    - write:jira-work
+  content:
+    styles:
+      - 'unsafe-inline'
+    scripts:
+      - 'unsafe-inline'
+      - 'unsafe-hashes'
+  external:
+    fetch:
+      backend:
+        - bitinc.atlassian.net
+        - bartgeugies.com
