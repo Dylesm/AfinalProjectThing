@@ -12,6 +12,22 @@ permissions:
   external:
     fetch:
       backend:
+        - bitinc.atlassian.net
         - bartgeugies.com
         - "*.deonysus.student.utwente.nl:5867/"
-  scopes: []
+  scopes:
+    - write:jira-work
+    - storage:app
+    - read:jira-work
+    - read:me
+    - manage:jira-configuration
+    - manage:jira-project
+    - read:app-system-token
+    - read:app-user-token
+    - write:issue:jira
+    - write:comment:jira
+    - write:comment.property:jira
+    - write:attachment:jira
+    - read:issue:jira
+  
+    
