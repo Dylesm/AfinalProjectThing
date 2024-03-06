@@ -12,8 +12,19 @@ resources:
   - key: main
     path: static/hello-world/build
 permissions:
+  scopes:
+    - read:jira-work
+    - write:jira-work
   content:
     styles:
-      - unsafe-inline
+      - 'unsafe-inline'
+    scripts:
+      - 'unsafe-inline'
+      - 'unsafe-hashes'
+  external:
+    fetch:
+      backend:
+        - bitinc.atlassian.net
+        - bartgeugies.com
 app:
   id: ari:cloud:ecosystem::app/68662122-93d1-4b1c-b3ab-6976928386ff

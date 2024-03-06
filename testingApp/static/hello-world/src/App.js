@@ -53,6 +53,7 @@ function App() {
     // submit form data to forge bridge
     try {
       view.submit(formData);
+      console.log(`Formdata: ${formData}`);
     } catch (errorTrace) {
       console.log("Couldn't save custom field : ", errorTrace);
     }
@@ -75,18 +76,6 @@ function App() {
                   />
                   {error && error[CUSTOM_FIELD_NAME] && <ErrorMessage>{error[CUSTOM_FIELD_NAME]}</ErrorMessage>}
                 </Fragment>
-              )}
-            </Field>
-            <Field label={CUSTOM_FIELD_NAME} name={CUSTOM_FIELD_NAME}>
-              {({fieldProps}) => (
-                  <Fragment>
-                    <Textfield
-                        {...fieldProps}
-                        placeholder="Enter value"
-                        onChange={(event) => debounceOnChange({name: event.target.name, value: event.target.value})}
-                    />
-                    {error && error[CUSTOM_FIELD_NAME] && <ErrorMessage>{error[CUSTOM_FIELD_NAME]}</ErrorMessage>}
-                  </Fragment>
               )}
             </Field>
           </form>
