@@ -35,7 +35,7 @@ function App() {
     // manipulate form fields
     for (const property in newFieldData) {
       fields.push({key: property, value: newFieldData[property]});
-      console.log(fields)
+      // console.log(fields)
 
       // check form validation
       isValid = validateCustomFields({
@@ -53,7 +53,7 @@ function App() {
     // submit form data to forge bridge
     try {
       view.submit(formData);
-      console.log(`Formdata: ${formData}`);
+      // console.log(`Formdata: ${formData}`);
     } catch (errorTrace) {
       console.log("Couldn't save custom field : ", errorTrace);
     }
