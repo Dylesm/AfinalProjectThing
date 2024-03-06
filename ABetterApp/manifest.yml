@@ -1,0 +1,16 @@
+modules:
+  jiraServiceManagement:portalFooter:
+    - key: abetterapp-hello-world-panel
+      resource: main
+      title: react-app
+      resolver:
+        function: resolver
+      viewportSize: medium
+  function:
+    - key: resolver
+      handler: index.handler
+resources:
+  - key: main
+    path: static/hello-world/build
+app:
+  id: ari:cloud:ecosystem::app/659d2c90-80a2-488e-83a2-49798582b9cb
