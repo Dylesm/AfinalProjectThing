@@ -1,5 +1,5 @@
 modules:
-  jiraServiceManagement:portalFooter:
+  jiraServiceManagement:portalHeader:
     - key: abetterapp-hello-world-panel
       resource: main
       title: react-app
