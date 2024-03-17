@@ -1,6 +1,6 @@
 modules:
   jiraServiceManagement:portalRequestCreatePropertyPanel:
-    - key: testingapp-portalRCPP-portal-request-create-property-panel
+    - key: testingapp-hello-world-portal-request-create-property-panel
       resource: main
       resolver:
         function: resolver
@@ -10,7 +10,7 @@ modules:
       handler: index.handler
 resources:
   - key: main
-    path: static/portalRCPP/build
+    path: static/hello-world/build
 permissions:
   scopes:
     - read:jira-work
