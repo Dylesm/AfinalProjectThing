@@ -1,6 +1,6 @@
 modules:
   jiraServiceManagement:portalRequestDetail:
-    - key: portalrequestdetail-hello-world-panel
+    - key: portalrequestdetail-panel
       resource: main
       resolver:
         function: resolver
@@ -11,6 +11,6 @@ modules:
       handler: index.handler
 resources:
   - key: main
-    path: static/hello-world/build
+    path: static/portalRCPP/build
 app:
   id: ari:cloud:ecosystem::app/ad140a5a-0077-4805-80b1-5b91b1994a6e

@@ -1,0 +1,31 @@
+modules:
+  jiraServiceManagement:portalRequestCreatePropertyPanel:
+    - key: mergedfunctionality-portalrcpp-panel
+      resource: rcpp-main
+      resolver:
+        function: rcpp-resolver
+      viewportSize: small
+      title: mergedFunctionalityPropertyPanel
+  jiraServiceManagement:portalRequestDetail:
+    - key: mergedfunctionality-portalrd-panel
+      resource: rd-main
+      resolver:
+        function: rd-resolver
+      viewportSize: medium
+      title: mergedFunctionalityRequestDetail
+  function:
+    - key: rcpp-resolver
+      handler: index.handler
+    - key: rd-resolver
+      handler: index.handler
+resources:
+  - key: rcpp-main
+    path: static/portalRCPP/build
+  - key: rd-main
+    path: static/portalRD/build
+permissions:
+  content:
+    styles:
+      - unsafe-inline
+app:
+  id: ari:cloud:ecosystem::app/93927154-2902-48ba-b341-ba9d4e5aa1bb

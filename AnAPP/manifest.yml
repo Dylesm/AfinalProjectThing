@@ -1,6 +1,6 @@
 modules:
   jiraServiceManagement:portalSubheader:
-      - key: anapp-hello-world-panel
+      - key: anapp-portalRCPP-panel
         function: main
   function:
     - key: main
