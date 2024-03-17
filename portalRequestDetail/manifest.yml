@@ -1,0 +1,16 @@
+modules:
+  jiraServiceManagement:portalRequestDetail:
+    - key: portalrequestdetail-hello-world-panel
+      resource: main
+      resolver:
+        function: resolver
+      viewportSize: medium
+      title: portalRequestDetail
+  function:
+    - key: resolver
+      handler: index.handler
+resources:
+  - key: main
+    path: static/hello-world/build
+app:
+  id: ari:cloud:ecosystem::app/ad140a5a-0077-4805-80b1-5b91b1994a6e

@@ -5,6 +5,8 @@ modules:
       title: react-app
       resolver:
         function: resolver
+  jiraServiceManagement:portalRequestDetail:
+
   function:
     - key: resolver
       handler: index.handler
