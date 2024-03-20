@@ -21,11 +21,22 @@ modules:
 resources:
   - key: rcpp-main
     path: static/portalRCPP/build
+    tunnel:
+      port: 3001
   - key: rd-main
     path: static/portalRD/build
+    tunnel:
+      port: 3000
 permissions:
+  scopes:
+    - write:jira-work
+    - write:issue:jira
   content:
     styles:
       - unsafe-inline
+  external:
+    fetch:
+      backend:
+        - bitinc.atlassian.net
 app:
   id: ari:cloud:ecosystem::app/93927154-2902-48ba-b341-ba9d4e5aa1bb
