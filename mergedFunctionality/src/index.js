@@ -3,18 +3,15 @@ const fetch = require('node-fetch');
 
 import api, { route } from "@forge/api";
 const resolver = new Resolver();
-resolver.define('UpdatePlease', async (req) => {
-  
-  
-    console.log("this is a test");
-
+resolver.define('UpdateData', async (req) => {
+  console.log(req.payload);
     var bodyData = `{
       "fields": {
-        "customfield_10055":"my new description"
+        "customfield_10061":"my new description"
       }
     }`;
 
-    await fetch('https://bitinc.atlassian.net/rest/api/2/issue/BIT-51', {
+    await fetch('https://bitinc.atlassian.net/rest/api/2/issue/BIT-58', {
     method: 'PUT',
     headers: {
       'Authorization': `Basic ${Buffer.from(

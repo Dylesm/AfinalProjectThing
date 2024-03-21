@@ -3,21 +3,37 @@ import { invoke, view } from '@forge/bridge';
 import api, { route } from "@forge/api";
 
 function App() {
+  const [updateDataForge, setUpdateDataForge] = useState('');
   async function fetchData() {  
-    const context = await view.getContext().then(console.log);
-    return context;
+    let updateData = `{"fields":{
+  `
+    let context = await view.getContext();
+    let key = context.extension.request.key;
+    let fields = context.extension.request.properties.value.fields
+    for (var field of fields) {
+      updateData += `"${field.key}":"${field.value}",`
+      //console.log(updateData);
+    }
+    updateData += `
+    }
+  }`
+    setUpdateDataForge(updateData);
+    console.log(updateData);
+    return updateData;
   }
 
-  // This sample uses Atlassian Forge
-// https://developer.atlassian.com/platform/forge/
+
+  
+
+
 
 async function functionEdit(){
-  invoke ("UpdatePlease",{key: "value"}).then(console.log);
-
-
+  invoke ("UpdateData",{key: {updateDataForge}}).then(console.log);
 }
 
-
+useEffect(() => {
+  fetchData();
+}, []);
 
 
 
@@ -26,7 +42,9 @@ async function functionEdit(){
     <div>
       <h1>Context</h1>
       <button onClick={fetchData}>Get Context</button>
-      <button onClick={functionEdit}>Editthe issue </button>
+      <button onClick={functionEdit}>Edit the issue </button>
+      <h1>Fields</h1>
+      <h2>{updateDataForge}</h2>
     </div>
   );
 }
