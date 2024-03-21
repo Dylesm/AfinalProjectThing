@@ -22,11 +22,13 @@ function App() {
       const errorMsg = !fieldValue || fieldValue.length < minLength ? `Please provide a value for required field "${fieldName}"` : undefined;
       setError({...error, [fieldName]: errorMsg});
       return !errorMsg;
+      console.log('FIELD VALIDATION SUCCESSFUL')
     }
     return true;
   }
 
   const onInputChangeHandler = ({name, value}) => {
+    console.log('INPUTCHANGEHANDLER CALLED')
     const newFieldData = !!name ? {...fieldData, [name]: value} : fieldData;
     setField(newFieldData);
     const fields = [];
@@ -35,8 +37,8 @@ function App() {
     // manipulate form fields
     for (const property in newFieldData) {
       fields.push({key: property, value: newFieldData[property]});
-      // console.log(fields)
 
+      console.log(newFieldData[property])
       // check form validation
       isValid = validateCustomFields({
         fieldName: property,
@@ -53,7 +55,7 @@ function App() {
     // submit form data to forge bridge
     try {
       view.submit(formData);
-      // console.log(`Formdata: ${formData}`);
+      console.log(`Formdata: ${formData}`);
     } catch (errorTrace) {
       console.log("Couldn't save custom field : ", errorTrace);
     }

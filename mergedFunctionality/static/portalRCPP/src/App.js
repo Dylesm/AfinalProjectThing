@@ -16,6 +16,17 @@ function App() {
   const [fieldData, setField] = useState({});
   const [error, setError] = useState({});
 
+  const [Stack, setStack] = useState(false);
+  const [Hipo, setHipo] = useState(false);
+  const [Asset, setAsset] = useState(false);
+  const [bos, setBos] = useState(false);
+  const [Vast, setVast] = useState(false);
+  const [Customer, setCustomer] = useState(false);
+
+  const [username, setUsername] = useState('');
+  const [products, setProducts] = useState([]);
+  const [showText, setShowText] = useState(true);
+
 
   const validateCustomFields = ({fieldName, fieldValue, minLength}) => {
     if (fieldName === CUSTOM_FIELD_NAME) {
@@ -44,6 +55,8 @@ function App() {
       }) && isValid;
     }
 
+
+
     const formData = {
       fields,
       isValid,
@@ -56,6 +69,40 @@ function App() {
       console.log("Couldn't save custom field : ", errorTrace);
     }
   }
+
+  async function getRequester() {
+    const response = await api.fetch('https://bartgeugies.com/', {
+      method: 'GET',
+    });
+
+    console.log(response)
+    let data = await response.json();
+    //console.log(data[userID]["access"]);
+    for (let i of data[userID]["access"]) {
+      switch (i) {
+        case "Stack":
+          setStack(true);
+          break;
+        case "Hipo":
+          setHipo(true);
+          break;
+        case "Asset":
+          setAsset(true);
+          break;
+        case "Bos":
+          setBos(true);
+          break;
+        case "Vast":
+          setVast(true);
+          break;
+        case "Customer":
+          setCustomer(true);
+          break;
+      }
+    }
+  }
+
+  getRequester()
 
   const debounceOnChange = debounce(({name, value}) => onInputChangeHandler({name, value}), 400);
 
@@ -74,6 +121,18 @@ function App() {
                   />
                   {error && error[CUSTOM_FIELD_NAME] && <ErrorMessage>{error[CUSTOM_FIELD_NAME]}</ErrorMessage>}
                 </Fragment>
+              )}
+            </Field>
+            <Field label='Field2_Label' name='Field2_Name'>
+              {({fieldProps}) => (
+                  <Fragment>
+                    <Textfield
+                        {...fieldProps}
+                        placeholder="Field2_Value"
+                        onChange={(event) => debounceOnChange({name: event.target.name, value: event.target.value})}
+                    />
+                    {error && error[CUSTOM_FIELD_NAME] && <ErrorMessage>{error[CUSTOM_FIELD_NAME]}</ErrorMessage>}
+                  </Fragment>
               )}
             </Field>
           </form>

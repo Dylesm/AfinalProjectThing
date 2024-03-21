@@ -160,9 +160,6 @@ console.log(await response.json());
                         setCustomer(true);
                         break;
                 }
-                
-                    
-
         }
     }
         
@@ -170,8 +167,6 @@ console.log(await response.json());
             username: '',
             products: []
         };
-
-
 
         useEffect(() => {
             getRequester();

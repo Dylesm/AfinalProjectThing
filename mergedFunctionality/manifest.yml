@@ -4,14 +4,14 @@ modules:
       resource: rcpp-main
       resolver:
         function: rcpp-resolver
-      viewportSize: small
+      viewportSize: large
       title: mergedFunctionalityPropertyPanel
   jiraServiceManagement:portalRequestDetail:
     - key: mergedfunctionality-portalrd-panel
       resource: rd-main
       resolver:
         function: rd-resolver
-      viewportSize: medium
+      viewportSize: large
       title: mergedFunctionalityRequestDetail
   function:
     - key: rcpp-resolver
