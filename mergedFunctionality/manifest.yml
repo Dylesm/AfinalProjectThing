@@ -38,5 +38,6 @@ permissions:
     fetch:
       backend:
         - bitinc.atlassian.net
+        - bartgeugies.com
 app:
   id: ari:cloud:ecosystem::app/93927154-2902-48ba-b341-ba9d4e5aa1bb
