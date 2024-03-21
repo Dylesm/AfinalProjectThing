@@ -7,7 +7,10 @@ resolver.define('UpdateData', async (req) => {
   console.log(req.payload);
     var bodyData = `{
       "fields": {
-        "customfield_10061":"my new description"
+        "customfield_10061":"my new description",
+        "customfield_10059": {"value":"Stack"},
+        "customfield_10062": {"value":"Linus"}
+        
       }
     }`;
 

@@ -4,15 +4,32 @@ import api, { route } from "@forge/api";
 
 function App() {
   const [updateDataForge, setUpdateDataForge] = useState('');
+  const [app, setApp] = useState('');
+  const [mod, setMod] = useState('');
+  const [version, setVersion] = useState('');
+  const [key, setKey] = useState('');
+
   async function fetchData() {  
     let updateData = `{"fields":{
   `
     let context = await view.getContext();
-    let key = context.extension.request.key;
+    setKey(context.extension.request.key);
+    
     let fields = context.extension.request.properties.value.fields
+    console.log(fields);
     for (var field of fields) {
       updateData += `"${field.key}":"${field.value}",`
-      //console.log(updateData);
+      switch (field.key) {
+        case "customfield_10059":
+          setApp(field.value);
+          break;
+        case "customfield_10060":
+          setMod(field.value);
+          break;
+        case "customfield_10061":
+          setVersion(field.value);
+          break;
+      }
     }
     updateData += `
     }
@@ -28,7 +45,7 @@ function App() {
 
 
 async function functionEdit(){
-  invoke ("UpdateData",{key: {updateDataForge}}).then(console.log);
+  invoke ("UpdateData",{key: {key},data: {updateDataForge}}).then(console.log);
 }
 
 useEffect(() => {
@@ -40,11 +57,19 @@ useEffect(() => {
 
   return (
     <div>
-      <h1>Context</h1>
+      <h2>Context</h2>
       <button onClick={fetchData}>Get Context</button>
       <button onClick={functionEdit}>Edit the issue </button>
-      <h1>Fields</h1>
-      <h2>{updateDataForge}</h2>
+      
+      
+      {/* <input type="text">{updateDataForge}</input> */}
+      <h3>App</h3>
+      <input disabled type="text" id="nApp" name="lname" value={app}></input>
+      <h3>Module</h3>
+      <input disabled type="text" id="nApp" name="lname" value={mod}></input>
+      <h3>Version</h3>
+      <input disabled type="text" id="nApp" name="lname" value={version}></input>
+      
     </div>
   );
 }
