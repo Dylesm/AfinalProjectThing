@@ -1,8 +1,9 @@
 import Resolver from '@forge/resolver';
 const fetch = require('node-fetch');
-
 import api, { route } from "@forge/api";
+
 const resolver = new Resolver();
+
 resolver.define('UpdateData', async (req) => {
   console.log(req.payload);
     var bodyData = `{
@@ -10,7 +11,6 @@ resolver.define('UpdateData', async (req) => {
         "customfield_10061":"my new description",
         "customfield_10059": {"value":"Stack"},
         "customfield_10062": {"value":"Linus"}
-        
       }
     }`;
 
@@ -35,14 +35,25 @@ resolver.define('UpdateData', async (req) => {
     .catch(async err => await console.error(err));
   
   return "done";
-  
-
-
-  
-    
 });
 
-
-
+// resolver.define('fetchAccess', async (req) => {
+//   let data = await api.fetch(
+//       'https://bartgeugies.com', {
+//           method: 'GET',
+//           mode: 'no-cors'
+//       }
+//   )
+//       .then(async response => {
+//         await console.log(
+//             `Response: ${response.status} ${response.statusText}`
+//         );
+//         return response.text();
+//       })
+//       .then(async text => await console.log(text))
+//       .catch(async err => await console.error(err));
+//
+//   return data
+// })
 
 export const handler = resolver.getDefinitions();

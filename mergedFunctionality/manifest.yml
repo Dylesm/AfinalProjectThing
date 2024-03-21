@@ -21,23 +21,24 @@ modules:
 resources:
   - key: rcpp-main
     path: static/portalRCPP/build
-    tunnel:
-      port: 3001
   - key: rd-main
     path: static/portalRD/build
-    tunnel:
-      port: 3000
 permissions:
   scopes:
     - write:jira-work
     - write:issue:jira
   content:
     styles:
-      - unsafe-inline
+      - 'unsafe-inline'
+    scripts:
+      - 'unsafe-inline'
+      - 'unsafe-hashes'
   external:
     fetch:
       backend:
-        - bitinc.atlassian.net
-        - bartgeugies.com
+        - 'bitinc.atlassian.net'
+        - 'https://bartgeugies.com'
+      client:
+        - 'https://bartgeugies.com'
 app:
   id: ari:cloud:ecosystem::app/93927154-2902-48ba-b341-ba9d4e5aa1bb

@@ -1,6 +1,6 @@
-import React, {useState, Fragment} from 'react';
+import React, { useEffect, useState, Fragment} from 'react';
 import debounce from 'lodash/debounce';
-import {view} from '@forge/bridge';
+import { invoke, view } from '@forge/bridge';
 import styled from 'styled-components';
 import Form, {Field, ErrorMessage} from '@atlaskit/form';
 import Textfield from '@atlaskit/textfield';
@@ -10,23 +10,40 @@ const Content = styled.div`
 `;
 
 const CUSTOM_FIELD_NAME = 'Custom Field';
-const MIN_LENGTH_LIMIT = 5;
+const MIN_LENGTH_LIMIT = 5
 
 function App() {
   const [fieldData, setField] = useState({});
   const [error, setError] = useState({});
 
-  const [Stack, setStack] = useState(false);
-  const [Hipo, setHipo] = useState(false);
-  const [Asset, setAsset] = useState(false);
-  const [bos, setBos] = useState(false);
-  const [Vast, setVast] = useState(false);
-  const [Customer, setCustomer] = useState(false);
+  // const fetchData = async () => {
+  //   let id = '1001'
+  //
+  //   let qry = await invoke('fetchAccess', {id: {id}}).then(console.log).then(console.log);
+  //
+  // }
 
-  const [username, setUsername] = useState('');
-  const [products, setProducts] = useState([]);
-  const [showText, setShowText] = useState(true);
+  async function fetchData() {
+    let data = await api.fetch(
+        'https://bartgeugies.com', {
+            method: 'GET'
+        }
+    )
+        .then(async response => {
+          await console.log(
+              `Response: ${response.status} ${response.statusText}`
+          );
+          return response.text();
+        })
+        .then(async text => await console.log(text))
+        .catch(async err => await console.error(err));
 
+    return data
+  }
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   const validateCustomFields = ({fieldName, fieldValue, minLength}) => {
     if (fieldName === CUSTOM_FIELD_NAME) {
@@ -55,8 +72,6 @@ function App() {
       }) && isValid;
     }
 
-
-
     const formData = {
       fields,
       isValid,
@@ -69,40 +84,6 @@ function App() {
       console.log("Couldn't save custom field : ", errorTrace);
     }
   }
-
-  async function getRequester() {
-    const response = await api.fetch('https://bartgeugies.com/', {
-      method: 'GET',
-    });
-
-    console.log(response)
-    let data = await response.json();
-    //console.log(data[userID]["access"]);
-    for (let i of data[userID]["access"]) {
-      switch (i) {
-        case "Stack":
-          setStack(true);
-          break;
-        case "Hipo":
-          setHipo(true);
-          break;
-        case "Asset":
-          setAsset(true);
-          break;
-        case "Bos":
-          setBos(true);
-          break;
-        case "Vast":
-          setVast(true);
-          break;
-        case "Customer":
-          setCustomer(true);
-          break;
-      }
-    }
-  }
-
-  getRequester()
 
   const debounceOnChange = debounce(({name, value}) => onInputChangeHandler({name, value}), 400);
 
