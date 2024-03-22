@@ -21,8 +21,12 @@ modules:
 resources:
   - key: rcpp-main
     path: static/portalRCPP/build
+    tunnel:
+      port: 3001
   - key: rd-main
     path: static/portalRD/build
+    tunnel:
+      port: 3000
 permissions:
   scopes:
     - write:jira-work
@@ -37,8 +41,10 @@ permissions:
     fetch:
       backend:
         - 'bitinc.atlassian.net'
-        - 'https://bartgeugies.com'
+        - 'bartgeugies.com'
+        - 'whoami2245.cloudflareaccess.com'
       client:
         - 'https://bartgeugies.com'
+        - 'whoami2245.cloudflareaccess.com'
 app:
   id: ari:cloud:ecosystem::app/93927154-2902-48ba-b341-ba9d4e5aa1bb

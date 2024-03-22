@@ -6,6 +6,8 @@
   "dependencies": {
     "@atlaskit/css-reset": "^6.6.2",
     "@atlaskit/form": "^9.0.7",
+    "@atlaskit/primitives": "^5.1.2",
+    "@atlaskit/radio": "^6.1.2",
     "@atlaskit/textfield": "^6.0.0",
     "@forge/api": "^3.3.0",
     "@forge/bridge": "3.3.0",

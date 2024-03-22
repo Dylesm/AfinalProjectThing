@@ -13,28 +13,35 @@ function App() {
     let updateData = `{"fields":{
   `
     let context = await view.getContext();
+    console.log(await context);
     setKey(context.extension.request.key);
     
     let fields = context.extension.request.properties.value.fields
     console.log(context.extension.request.properties.value.fields);
     console.log(fields);
     for (var field of fields) {
-      updateData += `"${field.key}":"${field.value}",`
+
+      
+     
       switch (field.key) {
         case "customfield_10059":
+          console.log("app");
           setApp(field.value);
+          updateData += `"${field.key}":{"value":"${field.value}"},`
           break;
         case "customfield_10062":
+          console.log("module");
           setMod(field.value);
+          updateData += `"${field.key}":{"value":"${field.value}"},`
           break;
         case "customfield_10061":
+          console.log("version");
           setVersion(field.value);
+          updateData += `"${field.key}":"${field.value}"`
           break;
       }
     }
-    updateData += `
-    }
-  }`
+    updateData += `}}`
     setUpdateDataForge(updateData);
     console.log(updateData);
     return updateData;

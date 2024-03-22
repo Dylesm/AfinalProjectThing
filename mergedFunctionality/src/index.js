@@ -5,7 +5,11 @@ import api, { route } from "@forge/api";
 const resolver = new Resolver();
 
 resolver.define('UpdateData', async (req) => {
-  console.log(req.payload);
+  let key = req.payload.key.key; 
+  console.log(key);
+
+  let updatedData = req.payload.data.updateDataForge;
+  console.log(updatedData);
     var bodyData = `{
       "fields": {
         "customfield_10061":"my new description",
@@ -13,8 +17,8 @@ resolver.define('UpdateData', async (req) => {
         "customfield_10062": {"value":"Linus"}
       }
     }`;
-
-    await fetch('https://bitinc.atlassian.net/rest/api/2/issue/BIT-58', {
+    
+    await fetch(`https://bitinc.atlassian.net/rest/api/2/issue/${key}`, {
     method: 'PUT',
     headers: {
       'Authorization': `Basic ${Buffer.from(
@@ -23,7 +27,7 @@ resolver.define('UpdateData', async (req) => {
       'Accept': 'application/json',
       'Content-Type': 'application/json'
     },
-    body: bodyData
+    body: updatedData
   })
     .then(async response => {
       await console.log(
@@ -41,7 +45,10 @@ resolver.define('UpdateData', async (req) => {
 //   let data = await api.fetch(
 //       'https://bartgeugies.com', {
 //           method: 'GET',
-//           mode: 'no-cors'
+//           mode: 'cors', // Add the 'cors' mode
+//           headers: {
+//             'Access-Control-Allow-Origin': '*' // Add the CORS header
+//           }
 //       }
 //   )
 //       .then(async response => {
@@ -52,7 +59,7 @@ resolver.define('UpdateData', async (req) => {
 //       })
 //       .then(async text => await console.log(text))
 //       .catch(async err => await console.error(err));
-//
+
 //   return data
 // })
 
