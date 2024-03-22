@@ -16,9 +16,9 @@ const MIN_LENGTH_LIMIT = 5
 
 function App() {
 
-  let optionsApps = [
-  ];
+  
   const [fieldData, setField] = useState({});
+  const [optionsApps, setOptionsApps] = useState([]);
   const [error, setError] = useState({});
 
   // const fetchData = async () => {
@@ -40,12 +40,12 @@ function App() {
 
   function populateApps(datas){
     console.log(datas);
-    let apps = [];
+    
     for (let key of datas.access) {
       console.log(key);
       optionsApps.push({name: 'customfield_10059', value: key, label: key});      
     }
-    return apps;
+    
 
 
   }
@@ -80,6 +80,7 @@ function App() {
   }, []);
 
   const validateCustomFields = ({fieldName, fieldValue, minLength}) => {
+    console.log(optionsApps);
     if (fieldName === CUSTOM_FIELD_NAME) {
       const errorMsg = !fieldValue || fieldValue.length < minLength ? `Please provide a value for required field "${fieldName}"` : undefined;
       setError({...error, [fieldName]: errorMsg});
@@ -137,6 +138,7 @@ function App() {
 
   const onRadioChangeHandler = ({name, value}) => {
     console.log(name, value);
+    console.log(optionsApps);
     const newFieldData = !!name ? {...fieldData, [name]: value} : fieldData;
     setField(newFieldData);
     const fields = [];
