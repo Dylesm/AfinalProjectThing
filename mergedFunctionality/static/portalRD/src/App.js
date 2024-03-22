@@ -16,6 +16,7 @@ function App() {
     setKey(context.extension.request.key);
     
     let fields = context.extension.request.properties.value.fields
+    console.log(context.extension.request.properties.value.fields);
     console.log(fields);
     for (var field of fields) {
       updateData += `"${field.key}":"${field.value}",`
@@ -23,7 +24,7 @@ function App() {
         case "customfield_10059":
           setApp(field.value);
           break;
-        case "customfield_10060":
+        case "customfield_10062":
           setMod(field.value);
           break;
         case "customfield_10061":
@@ -64,11 +65,11 @@ useEffect(() => {
       
       {/* <input type="text">{updateDataForge}</input> */}
       <h3>App</h3>
-      <input disabled type="text" id="nApp" name="lname" value={app}></input>
+      <input disabled type="text"  class="display" id="nApp" name="lname" value={app}></input>
       <h3>Module</h3>
-      <input disabled type="text" id="nApp" name="lname" value={mod}></input>
+      <input disabled type="text"  class="display" id="nApp" name="lname" value={mod}></input>
       <h3>Version</h3>
-      <input disabled type="text" id="nApp" name="lname" value={version}></input>
+      <input disabled type="text"  class="display" id="nApp" name="lname" value={version}></input>
       
     </div>
   );
