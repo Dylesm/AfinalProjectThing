@@ -1,15 +1,16 @@
 import Resolver from '@forge/resolver';
 const fetch = require('node-fetch');
 import api, { route } from "@forge/api";
+import { text } from 'express';
 
 const resolver = new Resolver();
 
 resolver.define('UpdateData', async (req) => {
     let key = req.payload.key.key;
-    console.log(key);
+    //console.log(key);
 
     let updatedData = req.payload.data.updateDataForge;
-    console.log(updatedData);
+    //console.log(updatedData);
     var bodyData = `{
       "fields": {
         "customfield_10061":"my new description",
@@ -43,7 +44,8 @@ resolver.define('UpdateData', async (req) => {
 
 resolver.define('fetchAccess', async (req) => {
     let id = req.payload.id.id;
-    console.log(id)
+    let dataqr;
+    //console.log(id)
     let data = await api.fetch(
         `https://bartgeugies.com/data?id=${id}`, {
             method: 'GET'
@@ -53,12 +55,15 @@ resolver.define('fetchAccess', async (req) => {
             await console.log(
                 `Response: ${response.status} ${response.statusText}`
             );
-            return response.text();
+            dataqr = response.text();
+            
         })
-        .then(async text => await console.log(text))
+        .then(async text => console.log(text))
         .catch(async err => await console.error(err));
-
-    return data
+    
+    console.log(await dataqr, "here");
+    return await dataqr;
+    
 })
 
 export const handler = resolver.getDefinitions();

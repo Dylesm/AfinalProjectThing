@@ -16,13 +16,15 @@ const MIN_LENGTH_LIMIT = 5
 
 function App() {
 
-
+  
   const [fieldData, setField] = useState({});
   const [optionsApps, setOptionsApps] = useState([]);
   const [error, setError] = useState({});
 
   const fetchData = async (id) => {
-    let qry = await invoke('fetchAccess', {id: {id}}).then(console.log)
+    let qry = await invoke('fetchAccess', {id: {id}});  
+    console.log(await qry, "this is the query"); 
+    return await JSON.parse(qry);
   }
 
 
@@ -37,12 +39,13 @@ function App() {
 
   function populateApps(datas){
     console.log(datas);
-
+    let apps = [];
     for (let key of datas.access) {
-      console.log(key);
-      optionsApps.push({name: 'customfield_10059', value: key, label: key});
+      console.log(key, "populating");
+      apps.push({name: 'customfield_10059', value: key, label: key});
+      console.log(optionsApps);
     }
-
+    setOptionsApps(apps);
 
 
   }
@@ -72,12 +75,15 @@ function App() {
   // }
 
   useEffect(() => {
-    populateApps(hardData[1001]);
-    fetchData(1001);
+    async function fetching() {
+    let dataToPop = await fetchData(1002);
+    await populateApps(dataToPop);}
+    fetching();
+    
   }, []);
 
   const validateCustomFields = ({fieldName, fieldValue, minLength}) => {
-    console.log(optionsApps);
+    
     if (fieldName === CUSTOM_FIELD_NAME) {
       const errorMsg = !fieldValue || fieldValue.length < minLength ? `Please provide a value for required field "${fieldName}"` : undefined;
       setError({...error, [fieldName]: errorMsg});
