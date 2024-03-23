@@ -16,17 +16,14 @@ const MIN_LENGTH_LIMIT = 5
 
 function App() {
 
-  
+
   const [fieldData, setField] = useState({});
   const [optionsApps, setOptionsApps] = useState([]);
   const [error, setError] = useState({});
 
-  // const fetchData = async () => {
-  //   let id = '1001'
-  
-  //   let qry = await invoke('fetchAccess', {id: {id}}).then(console.log).then(console.log);
-  
-  // }
+  const fetchData = async (id) => {
+    let qry = await invoke('fetchAccess', {id: {id}}).then(console.log)
+  }
 
 
 
@@ -40,20 +37,20 @@ function App() {
 
   function populateApps(datas){
     console.log(datas);
-    
+
     for (let key of datas.access) {
       console.log(key);
-      optionsApps.push({name: 'customfield_10059', value: key, label: key});      
+      optionsApps.push({name: 'customfield_10059', value: key, label: key});
     }
-    
+
 
 
   }
 
 
- 
 
-  
+
+
 
 
   // async function fetchData() {
@@ -76,7 +73,7 @@ function App() {
 
   useEffect(() => {
     populateApps(hardData[1001]);
-    //fetchData();
+    fetchData(1001);
   }, []);
 
   const validateCustomFields = ({fieldName, fieldValue, minLength}) => {
@@ -176,16 +173,16 @@ function App() {
 
 
   return (
-    <Content>
-      <Form>
-        {({formProps}) => (
-          <form {...formProps}>
-            <Box>
-              <RadioGroup
-              options={optionsApps}
-              onChange={(event)=>{debounceRadioOnChange({name: event.target.name, value: event.target.value})}}/>
-          </Box>
-            {/* <Field label="Apps" name="customfield_10059">
+      <Content>
+        <Form>
+          {({formProps}) => (
+              <form {...formProps}>
+                <Box>
+                  <RadioGroup
+                      options={optionsApps}
+                      onChange={(event)=>{debounceRadioOnChange({name: event.target.name, value: event.target.value})}}/>
+                </Box>
+                {/* <Field label="Apps" name="customfield_10059">
               {({fieldProps}) => (
                 <Fragment>
                   <Textfield
@@ -197,34 +194,34 @@ function App() {
                 </Fragment>
               )}
             </Field> */}
-            <Field label="modules" name="customfield_10062">
-              {({fieldProps}) => (
-                <Fragment>
-                  <Textfield
-                    {...fieldProps}
-                    placeholder="Enter value"
-                    onChange={(event) => debounceOnChange({name: event.target.name, value: event.target.value})}
-                  />
-                  {error && error[CUSTOM_FIELD_NAME] && <ErrorMessage>{error[CUSTOM_FIELD_NAME]}</ErrorMessage>}
-                </Fragment>
-              )}
-            </Field>
-            <Field label='Version' name="customfield_10061">
-              {({fieldProps}) => (
-                  <Fragment>
-                    <Textfield
-                        {...fieldProps}
-                        placeholder="Field2_Value"
-                        onChange={(event) => debounceOnChange({name: event.target.name, value: event.target.value})}
-                    />
-                    {error && error[CUSTOM_FIELD_NAME] && <ErrorMessage>{error[CUSTOM_FIELD_NAME]}</ErrorMessage>}
-                  </Fragment>
-              )}
-            </Field>
-          </form>
-        )}
-      </Form>
-    </Content>
+                <Field label="modules" name="customfield_10062">
+                  {({fieldProps}) => (
+                      <Fragment>
+                        <Textfield
+                            {...fieldProps}
+                            placeholder="Enter value"
+                            onChange={(event) => debounceOnChange({name: event.target.name, value: event.target.value})}
+                        />
+                        {error && error[CUSTOM_FIELD_NAME] && <ErrorMessage>{error[CUSTOM_FIELD_NAME]}</ErrorMessage>}
+                      </Fragment>
+                  )}
+                </Field>
+                <Field label='Version' name="customfield_10061">
+                  {({fieldProps}) => (
+                      <Fragment>
+                        <Textfield
+                            {...fieldProps}
+                            placeholder="Field2_Value"
+                            onChange={(event) => debounceOnChange({name: event.target.name, value: event.target.value})}
+                        />
+                        {error && error[CUSTOM_FIELD_NAME] && <ErrorMessage>{error[CUSTOM_FIELD_NAME]}</ErrorMessage>}
+                      </Fragment>
+                  )}
+                </Field>
+              </form>
+          )}
+        </Form>
+      </Content>
 
   );
 }
