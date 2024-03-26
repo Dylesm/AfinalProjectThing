@@ -7,6 +7,7 @@ import Textfield from '@atlaskit/textfield';
 import { RadioGroup } from '@atlaskit/radio';
 import { Box } from '@atlaskit/primitives';
 import { OptionsPropType } from '@atlaskit/radio/types';
+import { set } from 'lodash';
 const Content = styled.div`
   overflow: hidden;
 `;
@@ -14,7 +15,12 @@ const Content = styled.div`
 const CUSTOM_FIELD_NAME = 'Custom Field';
 const MIN_LENGTH_LIMIT = 5
 
+
+//@TODO make the module part dissapear while an app without 
+
 function App() {
+  
+  const [userAcountId, setUserAccountId] = useState(""); //user account ids
   const [moduleVisible, setModuleVisible] = useState(false); //module visibility
   const [currentModule, setCurrentModule] = useState([]); //current module
   const [fieldData, setField] = useState({});
@@ -30,6 +36,8 @@ function App() {
    * @returns {Promise<Object>} - A promise that resolves to the fetched data.
    */
   const fetchData = async (id) => {
+    
+    
     let qry = await invoke('fetchAccess', {id: {id}});  
     return await JSON.parse(qry);
 }
@@ -49,13 +57,26 @@ function App() {
 
 
   useEffect(() => {
-    async function fetchDataAndPopulateApps() {
+      async function fetchDataAndPopulateApps() {
+      const userId =  (await view.getContext()).accountId;
+      setUserAccountId(userId);
       const dataToPop = await fetchData(1001);
       await populateApps(dataToPop);
+      const userIds =  await invoke('getOrgs');
+      console.log(JSON.parse(userIds));
     }
     fetchDataAndPopulateApps();
   }, []);
 
+  /**
+   * Validates custom fields based on the provided parameters.
+   *
+   * @param {Object} options - The options object.
+   * @param {string} options.fieldName - The name of the field to validate.
+   * @param {string} options.fieldValue - The value of the field to validate.
+   * @param {number} options.minLength - The minimum length required for the field value.
+   * @returns {boolean} - Returns true if the field is valid, false otherwise.
+   */
   const validateCustomFields = ({fieldName, fieldValue, minLength}) => {
     if (fieldName === CUSTOM_FIELD_NAME) {
       const errorMsg = !fieldValue || fieldValue.length < minLength ? `Please provide a value for required field "${fieldName}"` : undefined;
@@ -64,6 +85,8 @@ function App() {
     }
     return true;
   }
+
+
 
   const onInputChangeHandler = ({name, value}) => {
     const newFieldData = !!name ? {...fieldData, [name]: value} : fieldData;
@@ -90,7 +113,6 @@ function App() {
     // submit form data to forge bridge
     try {
       view.submit(formData);
-      console.log(formData);
     } catch (errorTrace) {
       console.log("Couldn't save custom field : ", errorTrace);
     }
@@ -180,8 +202,12 @@ function App() {
   ];
 
 
+  /**
+   * Populates modules based on the provided app name.
+   * @param {string} app - The name of the app.
+   * @returns {string} - The result of the module population.
+   */
   function populateModules(app){
-    console.log(app);
     switch (app) {
       case 'Stack':
         setModuleVisible(true);
@@ -192,15 +218,9 @@ function App() {
         setCurrentModule(BosApps);
         return "BOSSED"
       default:
-        setModuleVisible(false);
-        const newFieldData =  fieldData;
-        console.log(newFieldData);
-        console.log(!!newFieldData.customfield_10062);
-        delete newFieldData.customfield_10062;
-        
-        
+        //onRadioChangeHandler({name: 'customfield_10062', value: "clear"});
+        setModuleVisible(false);  
     }
-    
   }
 
 

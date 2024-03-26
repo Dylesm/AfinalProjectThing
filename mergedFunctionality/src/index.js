@@ -10,14 +10,7 @@ resolver.define('UpdateData', async (req) => {
     //console.log(key);
 
     let updatedData = req.payload.data.updateDataForge;
-    //console.log(updatedData);
-    var bodyData = `{
-      "fields": {
-        "customfield_10061":"my new description",
-        "customfield_10059": {"value":"Stack"},
-        "customfield_10062": {"value":"Linus"}
-      }
-    }`;
+    
 
     await fetch(`https://bitinc.atlassian.net/rest/api/2/issue/${key}`, {
         method: 'PUT',
@@ -65,5 +58,76 @@ resolver.define('fetchAccess', async (req) => {
     return await dataqr;
     
 })
+
+
+async function getAllOrgs() {
+    try {
+        const response = await fetch('https://bitinc.atlassian.net/rest/servicedeskapi/organization', {
+            method: 'GET',
+            headers: {
+                'Authorization': `Basic ${Buffer.from(
+                    'bitinc2024@gmail.com:ATATT3xFfGF0McuJY1uJEX1woSYKY-R_eL9Cpw4x8SbqTqWIs-j0LgyPMnlvdJlkudQwX7Kfwr3ua40fTayWVHoTw1BAEi7bpheEBIgwh2bUa-mymJwT9dfS0VQZ-9lc8Cq6Xidgzkgpx0l-5B4e7RK_tHM7RAcuPkdOQluOEeDf2EbJW4jsy6w=39938EE4'
+                ).toString('base64')}`,
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        });
+        console.log(`Response: ${response.status} ${response.statusText}`);
+        const text = await response.text();
+        return text
+        
+    } catch (err) {
+        console.error(err);
+    }
+}
+
+/**
+ * Retrieves the users in the specified organization.
+ * @param {string} orgId - The ID of the organization.
+ * @returns {Promise<string>} - A promise that resolves to the response text.
+ */
+async function getUsersInOrg(orgId) {
+    try {
+        const response = await fetch(`https://bitinc.atlassian.net/rest/servicedeskapi/organization/${orgId}/user`, {
+            method: 'GET',
+            headers: {'Authorization': `Basic ${Buffer.from(
+                'bitinc2024@gmail.com:ATATT3xFfGF0McuJY1uJEX1woSYKY-R_eL9Cpw4x8SbqTqWIs-j0LgyPMnlvdJlkudQwX7Kfwr3ua40fTayWVHoTw1BAEi7bpheEBIgwh2bUa-mymJwT9dfS0VQZ-9lc8Cq6Xidgzkgpx0l-5B4e7RK_tHM7RAcuPkdOQluOEeDf2EbJW4jsy6w=39938EE4'
+            ).toString('base64')}`,
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        }
+    });
+    console.log(`Response: ${response.status} ${response.statusText}`);
+    const text = await response.text();
+    
+    return text
+    
+} catch (err) {
+    console.error(err);
+}
+}
+
+
+
+resolver.define("getOrgs", async (req) => {
+    let orgUserMap = new Map();
+    let orgs = await getAllOrgs();
+    orgs = JSON.parse(orgs);
+    for (var org of orgs.values) {
+        let users = await getUsersInOrg(org.id);
+        users = JSON.parse(users);
+        let userIds = [];
+        for (var user of users.values) {
+            userIds.push(user.accountId);
+        }
+        orgUserMap.set(org.id, userIds);
+        }
+        const orgUserMapJson = JSON.stringify(Array.from(orgUserMap.entries()), null, 2);
+        return orgUserMapJson;
+    
+    
+})
+
+
 
 export const handler = resolver.getDefinitions();
