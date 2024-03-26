@@ -15,75 +15,48 @@ const CUSTOM_FIELD_NAME = 'Custom Field';
 const MIN_LENGTH_LIMIT = 5
 
 function App() {
-
-  
+  const [moduleVisible, setModuleVisible] = useState(false); //module visibility
+  const [currentModule, setCurrentModule] = useState([]); //current module
   const [fieldData, setField] = useState({});
   const [optionsApps, setOptionsApps] = useState([]);
   const [error, setError] = useState({});
 
+
+
+
+  /**
+   * Fetches access data of the user by invoking the 'fetchAccess' function with the provided ID.
+   * @param {number} id - The ID of the data to fetch.
+   * @returns {Promise<Object>} - A promise that resolves to the fetched data.
+   */
   const fetchData = async (id) => {
     let qry = await invoke('fetchAccess', {id: {id}});  
-    console.log(await qry, "this is the query"); 
     return await JSON.parse(qry);
-  }
+}
 
-
-
-  let hardData = {
-    "1001":{"access":["Stack","Hipo"]},
-    "1002":{"access":["Asset","Bos"]},
-    "1003":{"access":["Vast","Customer"]},
-    "1004":{"access":["Stack"]}
-  }
-
-
+  /**
+   * Populates the apps array with data.
+   * @param {Object} datas - The data object containing the access information.
+   */
   function populateApps(datas){
-    console.log(datas);
     let apps = [];
     for (let key of datas.access) {
-      console.log(key, "populating");
+      //custom field made in JSM to display the relevant App
       apps.push({name: 'customfield_10059', value: key, label: key});
-      console.log(optionsApps);
     }
     setOptionsApps(apps);
-
-
   }
 
 
-
-
-
-
-
-  // async function fetchData() {
-  //   let data = await api.fetch(
-  //       'https://bartgeugies.com', {
-  //           method: 'GET'
-  //       }
-  //   )
-  //       .then(async response => {
-  //         await console.log(
-  //             `Response: ${response.status} ${response.statusText}`
-  //         );
-  //         return response.text();
-  //       })
-  //       .then(async text => await console.log(text))
-  //       .catch(async err => await console.error(err));
-
-  //   return data
-  // }
-
   useEffect(() => {
-    async function fetching() {
-    let dataToPop = await fetchData(1002);
-    await populateApps(dataToPop);}
-    fetching();
-    
+    async function fetchDataAndPopulateApps() {
+      const dataToPop = await fetchData(1001);
+      await populateApps(dataToPop);
+    }
+    fetchDataAndPopulateApps();
   }, []);
 
   const validateCustomFields = ({fieldName, fieldValue, minLength}) => {
-    
     if (fieldName === CUSTOM_FIELD_NAME) {
       const errorMsg = !fieldValue || fieldValue.length < minLength ? `Please provide a value for required field "${fieldName}"` : undefined;
       setError({...error, [fieldName]: errorMsg});
@@ -114,7 +87,6 @@ function App() {
       fields,
       isValid,
     }
-
     // submit form data to forge bridge
     try {
       view.submit(formData);
@@ -130,6 +102,14 @@ function App() {
 
 
 
+  /**
+   * Validates radio fields.
+   *
+   * @param {Object} options - The options object.
+   * @param {string} options.fieldName - The name of the field.
+   * @param {string} options.fieldValue - The value of the field.
+   * @returns {boolean} - Returns true if the validation passes, false otherwise.
+   */
   const validateRadioFields = ({fieldName, fieldValue}) => {
     if (fieldName === 'radio-default' || fieldName === 'radio-disabled') {
       const errorMsg = !fieldValue ? `Please select a value for "${fieldName}"` : undefined;
@@ -142,6 +122,7 @@ function App() {
   const onRadioChangeHandler = ({name, value}) => {
     console.log(name, value);
     console.log(optionsApps);
+    
     const newFieldData = !!name ? {...fieldData, [name]: value} : fieldData;
     setField(newFieldData);
     const fields = [];
@@ -177,6 +158,51 @@ function App() {
 
   const debounceRadioOnChange = debounce(({name, value}) => onRadioChangeHandler({name, value}), 400);
 
+  const StackApps = [
+    { name: 'customfield_10062', value: 'Bookings', label: 'Bookings' },
+    { name: 'customfield_10062', value: 'Relations', label: 'Relations' },
+    { name: 'customfield_10062', value: 'Master Data', label: 'Master Data' },
+    { name: 'customfield_10062', value: 'Truck planning', label: 'Truck planning' },
+    { name: 'customfield_10062', value: 'Yard Managment', label: 'Yard Managment' },
+    { name: 'customfield_10062', value: 'Stock Containers', label: 'Stock Containers' },
+    { name: 'customfield_10062', value: 'Inbox', label: 'Inbox' },
+    { name: 'customfield_10062', value: 'Outbox', label: 'Outbox' }
+  ];
+  const BosApps = [
+    { name: 'customfield_10062', value: 'Cargo Planning', label: 'Cargo Planning' },
+    { name: 'customfield_10062', value: 'Charters', label: 'Charters' },
+    { name: 'customfield_10062', value: 'Control tower', label: 'Control tower' },
+    { name: 'customfield_10062', value: 'Core', label: 'Core' },
+    { name: 'customfield_10062', value: 'Inbox', label: 'Inbox' },
+    { name: 'customfield_10062', value: 'Outbox', label: 'Outbox' },
+    { name: 'customfield_10062', value: 'Invoicing', label: 'Invoicing' },
+    { name: 'customfield_10062', value: 'Location Planning', label: 'Location Planning' }
+  ];
+
+
+  function populateModules(app){
+    console.log(app);
+    switch (app) {
+      case 'Stack':
+        setModuleVisible(true);
+        setCurrentModule(StackApps);
+        return "STACKED"
+      case 'Bos':
+        setModuleVisible(true);
+        setCurrentModule(BosApps);
+        return "BOSSED"
+      default:
+        setModuleVisible(false);
+        const newFieldData =  fieldData;
+        console.log(newFieldData);
+        console.log(!!newFieldData.customfield_10062);
+        delete newFieldData.customfield_10062;
+        
+        
+    }
+    
+  }
+
 
   return (
       <Content>
@@ -184,40 +210,26 @@ function App() {
           {({formProps}) => (
               <form {...formProps}>
                 <Box>
+                <h3>App</h3>
                   <RadioGroup
+                      label="Apps"
                       options={optionsApps}
-                      onChange={(event)=>{debounceRadioOnChange({name: event.target.name, value: event.target.value})}}/>
+                      onChange={(event)=>{populateModules(event.target.value); ;debounceRadioOnChange({name: event.target.name, value: event.target.value})}}/>
                 </Box>
-                {/* <Field label="Apps" name="customfield_10059">
-              {({fieldProps}) => (
-                <Fragment>
-                  <Textfield
-                    {...fieldProps}
-                    placeholder="Enter value"
-                    onChange={(event) => debounceOnChange({name: event.target.name, value: event.target.value})}
-                  />
-                  {error && error[CUSTOM_FIELD_NAME] && <ErrorMessage>{error[CUSTOM_FIELD_NAME]}</ErrorMessage>}
-                </Fragment>
-              )}
-            </Field> */}
-                <Field label="modules" name="customfield_10062">
-                  {({fieldProps}) => (
-                      <Fragment>
-                        <Textfield
-                            {...fieldProps}
-                            placeholder="Enter value"
-                            onChange={(event) => debounceOnChange({name: event.target.name, value: event.target.value})}
-                        />
-                        {error && error[CUSTOM_FIELD_NAME] && <ErrorMessage>{error[CUSTOM_FIELD_NAME]}</ErrorMessage>}
-                      </Fragment>
-                  )}
-                </Field>
+                {moduleVisible &&  <Box>
+                 <h3>Modules</h3>
+                  <RadioGroup
+                      label="Modules"
+                      options={currentModule}
+                      onChange={(event)=>{debounceRadioOnChange({name: event.target.name, value: event.target.value})}}/>
+                </Box> }         
+          
                 <Field label='Version' name="customfield_10061">
                   {({fieldProps}) => (
                       <Fragment>
                         <Textfield
                             {...fieldProps}
-                            placeholder="Field2_Value"
+                            placeholder="Input version of your app"
                             onChange={(event) => debounceOnChange({name: event.target.name, value: event.target.value})}
                         />
                         {error && error[CUSTOM_FIELD_NAME] && <ErrorMessage>{error[CUSTOM_FIELD_NAME]}</ErrorMessage>}
