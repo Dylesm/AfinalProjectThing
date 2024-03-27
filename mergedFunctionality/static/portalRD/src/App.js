@@ -23,15 +23,17 @@ function App() {
     let fields = context.extension.request.properties.value.fields
     for (var field of fields) { 
       switch (field.key) {
-        case "customfield_10059":
+        case "customfield_10050":
           setApp(field.value);
-          updateData += `"${field.key}":{"value":"${field.value}"},`
+          console.log(field.value)
+          updateData += `"${field.key}":"${field.value}",`
           break;
-        case "customfield_10062":
+        case "customfield_10051":
           setMod(field.value);
-          updateData += `"${field.key}":{"value":"${field.value}"},`
+          console.log(typeof field.value)
+          updateData += `"${field.key}":"${field.value}",`
           break;
-        case "customfield_10061":
+        case "customfield_10052":
           setVersion(field.value);
           updateData += `"${field.key}":"${field.value}"`
           break;
@@ -41,10 +43,6 @@ function App() {
     setUpdateDataForge(updateData);
     return updateData;
   }
-
-
-  
-
 
 
 /**
@@ -61,20 +59,17 @@ useEffect(() => {
   fetchData();
 }, []);
 
-
-
-
   return (
     <div>
       <h2>Context</h2>
       <button onClick={fetchData}>Get Context</button>
       <button onClick={updateIssue}>Edit the issue </button>
       <h3>App</h3>
-      <input disabled type="text"  class="display" id="nApp" name="lname" value={app}></input>
+      <input disabled type="text"  id="nApp" name="lname" value={app}></input>
       <h3>Module</h3>
-      <input disabled type="text"  class="display" id="nApp" name="lname" value={mod}></input>
+      <input disabled type="text"  id="nApp" name="lname" value={mod}></input>
       <h3>Version</h3>
-      <input disabled type="text"  class="display" id="nApp" name="lname" value={version}></input>
+      <input disabled type="text"  id="nApp" name="lname" value={version}></input>
       
     </div>
   );

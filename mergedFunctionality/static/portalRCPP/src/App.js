@@ -19,7 +19,7 @@ const MIN_LENGTH_LIMIT = 5
 //@TODO make the module part dissapear while an app without 
 
 function App() {
-  
+
   const [userAcountId, setUserAccountId] = useState(""); //user account ids
   const [moduleVisible, setModuleVisible] = useState(false); //module visibility
   const [currentModule, setCurrentModule] = useState([]); //current module
@@ -36,11 +36,11 @@ function App() {
    * @returns {Promise<Object>} - A promise that resolves to the fetched data.
    */
   const fetchData = async (id) => {
-    
-    
-    let qry = await invoke('fetchAccess', {id: {id}});  
+
+
+    let qry = await invoke('fetchAccess', {id: {id}});
     return await JSON.parse(qry);
-}
+  }
 
   /**
    * Populates the apps array with data.
@@ -50,14 +50,14 @@ function App() {
     let apps = [];
     for (let key of datas.access) {
       //custom field made in JSM to display the relevant App
-      apps.push({name: 'customfield_10059', value: key, label: key});
+      apps.push({name: 'customfield_10050', value: key, label: key});
     }
     setOptionsApps(apps);
   }
 
 
   useEffect(() => {
-      async function fetchDataAndPopulateApps() {
+    async function fetchDataAndPopulateApps() {
       const userId =  (await view.getContext()).accountId;
       setUserAccountId(userId);
       const dataToPop = await fetchData(1001);
@@ -85,8 +85,6 @@ function App() {
     }
     return true;
   }
-
-
 
   const onInputChangeHandler = ({name, value}) => {
     const newFieldData = !!name ? {...fieldData, [name]: value} : fieldData;
@@ -120,10 +118,6 @@ function App() {
 
   const debounceOnChange = debounce(({name, value}) => onInputChangeHandler({name, value}), 400);
 
-
-
-
-
   /**
    * Validates radio fields.
    *
@@ -144,7 +138,7 @@ function App() {
   const onRadioChangeHandler = ({name, value}) => {
     console.log(name, value);
     console.log(optionsApps);
-    
+
     const newFieldData = !!name ? {...fieldData, [name]: value} : fieldData;
     setField(newFieldData);
     const fields = [];
@@ -180,25 +174,27 @@ function App() {
 
   const debounceRadioOnChange = debounce(({name, value}) => onRadioChangeHandler({name, value}), 400);
 
-  const StackApps = [
-    { name: 'customfield_10062', value: 'Bookings', label: 'Bookings' },
-    { name: 'customfield_10062', value: 'Relations', label: 'Relations' },
-    { name: 'customfield_10062', value: 'Master Data', label: 'Master Data' },
-    { name: 'customfield_10062', value: 'Truck planning', label: 'Truck planning' },
-    { name: 'customfield_10062', value: 'Yard Managment', label: 'Yard Managment' },
-    { name: 'customfield_10062', value: 'Stock Containers', label: 'Stock Containers' },
-    { name: 'customfield_10062', value: 'Inbox', label: 'Inbox' },
-    { name: 'customfield_10062', value: 'Outbox', label: 'Outbox' }
+  const ModulesField = 'customfield_10051'
+
+  const StackModules = [
+    { name: ModulesField, value: 'Bookings', label: 'Bookings' },
+    { name: ModulesField, value: 'Relations', label: 'Relations' },
+    { name: ModulesField, value: 'Master Data', label: 'Master Data' },
+    { name: ModulesField, value: 'Truck planning', label: 'Truck planning' },
+    { name: ModulesField, value: 'Yard Managment', label: 'Yard Managment' },
+    { name: ModulesField, value: 'Stock Containers', label: 'Stock Containers' },
+    { name: ModulesField, value: 'Inbox', label: 'Inbox' },
+    { name: ModulesField, value: 'Outbox', label: 'Outbox' }
   ];
-  const BosApps = [
-    { name: 'customfield_10062', value: 'Cargo Planning', label: 'Cargo Planning' },
-    { name: 'customfield_10062', value: 'Charters', label: 'Charters' },
-    { name: 'customfield_10062', value: 'Control tower', label: 'Control tower' },
-    { name: 'customfield_10062', value: 'Core', label: 'Core' },
-    { name: 'customfield_10062', value: 'Inbox', label: 'Inbox' },
-    { name: 'customfield_10062', value: 'Outbox', label: 'Outbox' },
-    { name: 'customfield_10062', value: 'Invoicing', label: 'Invoicing' },
-    { name: 'customfield_10062', value: 'Location Planning', label: 'Location Planning' }
+  const BosModules = [
+    { name: ModulesField, value: 'Cargo Planning', label: 'Cargo Planning' },
+    { name: ModulesField, value: 'Charters', label: 'Charters' },
+    { name: ModulesField, value: 'Control tower', label: 'Control tower' },
+    { name: ModulesField, value: 'Core', label: 'Core' },
+    { name: ModulesField, value: 'Inbox', label: 'Inbox' },
+    { name: ModulesField, value: 'Outbox', label: 'Outbox' },
+    { name: ModulesField, value: 'Invoicing', label: 'Invoicing' },
+    { name: ModulesField, value: 'Location Planning', label: 'Location Planning' }
   ];
 
 
@@ -211,15 +207,15 @@ function App() {
     switch (app) {
       case 'Stack':
         setModuleVisible(true);
-        setCurrentModule(StackApps);
+        setCurrentModule(StackModules);
         return "STACKED"
       case 'Bos':
         setModuleVisible(true);
-        setCurrentModule(BosApps);
+        setCurrentModule(BosModules);
         return "BOSSED"
       default:
-        //onRadioChangeHandler({name: 'customfield_10062', value: "clear"});
-        setModuleVisible(false);  
+        //onRadioChangeHandler({name: 'customfield_10051', value: "clear"});
+        setModuleVisible(false);
     }
   }
 
@@ -230,21 +226,21 @@ function App() {
           {({formProps}) => (
               <form {...formProps}>
                 <Box>
-                <h3>App</h3>
+                  <h3>App</h3>
                   <RadioGroup
                       label="Apps"
                       options={optionsApps}
                       onChange={(event)=>{populateModules(event.target.value); ;debounceRadioOnChange({name: event.target.name, value: event.target.value})}}/>
                 </Box>
                 {moduleVisible &&  <Box>
-                 <h3>Modules</h3>
+                  <h3>Modules</h3>
                   <RadioGroup
                       label="Modules"
                       options={currentModule}
                       onChange={(event)=>{debounceRadioOnChange({name: event.target.name, value: event.target.value})}}/>
-                </Box> }         
-          
-                <Field label='Version' name="customfield_10061">
+                </Box> }
+
+                <Field label='Version' name="customfield_10052">
                   {({fieldProps}) => (
                       <Fragment>
                         <Textfield

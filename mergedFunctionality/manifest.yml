@@ -40,13 +40,11 @@ permissions:
   external:
     fetch:
       backend:
-        - bitinc.atlassian.com
-        - bitinc.atlassian.net
-        - bitinc.atlassian.net/admin/v1/orgs
+        - bitincdev.atlassian.com
+        - bitincdev.atlassian.net
+        - bitincdev.atlassian.net/admin/v1/orgs
         - bartgeugies.com
-        - whoami2245.cloudflareaccess.com
       client:
-        - https://bartgeugies.com
-        - whoami2245.cloudflareaccess.com
+        - bartgeugies.com
 app:
   id: ari:cloud:ecosystem::app/93927154-2902-48ba-b341-ba9d4e5aa1bb

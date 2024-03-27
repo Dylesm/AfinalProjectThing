@@ -5,18 +5,20 @@ import { text } from 'express';
 
 const resolver = new Resolver();
 
+const api_token = 'b.p.geugies@student.utwente.nl:ATATT3xFfGF0wzAc7O6GF6SiuWPFEb_eYw6IX9ldKWZLkS83xnMw1nKZzd4kWH72xyV8o6VxYu7x7KyrqIJP8-WKu26kQ-_RQ8GY-ea4WvEHgZ4yZHISb6kF8VfdQDD0Lw7aCzp_XWUXmne1rku1wBhsF1NpSnqeLhkOlGDY5m9dxyKzM64PqD4=6350B172'
+
 resolver.define('UpdateData', async (req) => {
     let key = req.payload.key.key;
     //console.log(key);
 
     let updatedData = req.payload.data.updateDataForge;
-    
 
-    await fetch(`https://bitinc.atlassian.net/rest/api/2/issue/${key}`, {
+
+    await fetch(`https://bitincdev.atlassian.net/rest/api/2/issue/${key}`, {
         method: 'PUT',
         headers: {
             'Authorization': `Basic ${Buffer.from(
-                'bitinc2024@gmail.com:ATATT3xFfGF0McuJY1uJEX1woSYKY-R_eL9Cpw4x8SbqTqWIs-j0LgyPMnlvdJlkudQwX7Kfwr3ua40fTayWVHoTw1BAEi7bpheEBIgwh2bUa-mymJwT9dfS0VQZ-9lc8Cq6Xidgzkgpx0l-5B4e7RK_tHM7RAcuPkdOQluOEeDf2EbJW4jsy6w=39938EE4'
+                api_token
             ).toString('base64')}`,
             'Accept': 'application/json',
             'Content-Type': 'application/json'
@@ -49,24 +51,24 @@ resolver.define('fetchAccess', async (req) => {
                 `Response: ${response.status} ${response.statusText}`
             );
             dataqr = response.text();
-            
+
         })
         .then(async text => console.log(text))
         .catch(async err => await console.error(err));
-    
+
     console.log(await dataqr, "here");
     return await dataqr;
-    
+
 })
 
 
 async function getAllOrgs() {
     try {
-        const response = await fetch('https://bitinc.atlassian.net/rest/servicedeskapi/organization', {
+        const response = await fetch('https://bitincdev.atlassian.net/rest/servicedeskapi/organization', {
             method: 'GET',
             headers: {
                 'Authorization': `Basic ${Buffer.from(
-                    'bitinc2024@gmail.com:ATATT3xFfGF0McuJY1uJEX1woSYKY-R_eL9Cpw4x8SbqTqWIs-j0LgyPMnlvdJlkudQwX7Kfwr3ua40fTayWVHoTw1BAEi7bpheEBIgwh2bUa-mymJwT9dfS0VQZ-9lc8Cq6Xidgzkgpx0l-5B4e7RK_tHM7RAcuPkdOQluOEeDf2EbJW4jsy6w=39938EE4'
+                    api_token
                 ).toString('base64')}`,
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
@@ -75,7 +77,7 @@ async function getAllOrgs() {
         console.log(`Response: ${response.status} ${response.statusText}`);
         const text = await response.text();
         return text
-        
+
     } catch (err) {
         console.error(err);
     }
@@ -88,23 +90,23 @@ async function getAllOrgs() {
  */
 async function getUsersInOrg(orgId) {
     try {
-        const response = await fetch(`https://bitinc.atlassian.net/rest/servicedeskapi/organization/${orgId}/user`, {
+        const response = await fetch(`https://bitincdev.atlassian.net/rest/servicedeskapi/organization/${orgId}/user`, {
             method: 'GET',
             headers: {'Authorization': `Basic ${Buffer.from(
-                'bitinc2024@gmail.com:ATATT3xFfGF0McuJY1uJEX1woSYKY-R_eL9Cpw4x8SbqTqWIs-j0LgyPMnlvdJlkudQwX7Kfwr3ua40fTayWVHoTw1BAEi7bpheEBIgwh2bUa-mymJwT9dfS0VQZ-9lc8Cq6Xidgzkgpx0l-5B4e7RK_tHM7RAcuPkdOQluOEeDf2EbJW4jsy6w=39938EE4'
-            ).toString('base64')}`,
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        }
-    });
-    console.log(`Response: ${response.status} ${response.statusText}`);
-    const text = await response.text();
-    
-    return text
-    
-} catch (err) {
-    console.error(err);
-}
+                    api_token
+                ).toString('base64')}`,
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        });
+        console.log(`Response: ${response.status} ${response.statusText}`);
+        const text = await response.text();
+
+        return text
+
+    } catch (err) {
+        console.error(err);
+    }
 }
 
 
@@ -121,11 +123,11 @@ resolver.define("getOrgs", async (req) => {
             userIds.push(user.accountId);
         }
         orgUserMap.set(org.id, userIds);
-        }
-        const orgUserMapJson = JSON.stringify(Array.from(orgUserMap.entries()), null, 2);
-        return orgUserMapJson;
-    
-    
+    }
+    const orgUserMapJson = JSON.stringify(Array.from(orgUserMap.entries()), null, 2);
+    return orgUserMapJson;
+
+
 })
 
 
