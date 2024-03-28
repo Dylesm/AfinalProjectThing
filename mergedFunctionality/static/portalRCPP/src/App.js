@@ -36,8 +36,9 @@ function App() {
    * @returns {Promise<Object>} - A promise that resolves to the fetched data.
    */
   const fetchData = async (id) => {
-
-
+    let context = await view.getContext();  
+    console.log(context);
+    
     let qry = await invoke('fetchAccess', {id: {id}});
     return await JSON.parse(qry);
   }
@@ -57,6 +58,7 @@ function App() {
 
 
   useEffect(() => {
+    invoke("getOrgDetails")
     async function fetchDataAndPopulateApps() {
       const userId =  (await view.getContext()).accountId;
       setUserAccountId(userId);

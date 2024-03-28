@@ -81,7 +81,36 @@ async function getAllOrgs() {
     } catch (err) {
         console.error(err);
     }
+}async function getOrgDetails(orgId) {
+    console.log("wtf")
+    try {
+        const response = await fetch(`https://api.atlassian.com/jsm/csm/cloudid/8385de58-2977-4a3d-98c3-937a2d659fc3/api/v1/organization/1`, {
+            method: 'GET',
+            headers: {'Authorization': `Basic ${Buffer.from(
+                    api_token
+                ).toString('base64')}`,
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        });
+        console.log(`Response: ${response.status} ${response.statusText}`);
+        
+        const text = await response.text();
+        console.log( await "wtf",text);
+        return text
+
+    } catch (err) {
+        console.error(err);
+    }
 }
+
+resolver.define('getOrgDetails', async (req) => {
+    console.log(await getOrgDetails(1))
+})
+
+
+    
+
 
 /**
  * Retrieves the users in the specified organization.
@@ -126,8 +155,6 @@ resolver.define("getOrgs", async (req) => {
     }
     const orgUserMapJson = JSON.stringify(Array.from(orgUserMap.entries()), null, 2);
     return orgUserMapJson;
-
-
 })
 
 

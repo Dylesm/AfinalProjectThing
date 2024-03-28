@@ -43,6 +43,7 @@ permissions:
         - bitincdev.atlassian.com
         - bitincdev.atlassian.net
         - bitincdev.atlassian.net/admin/v1/orgs
+        - api.atlassian.com
         - bartgeugies.com
       client:
         - bartgeugies.com
