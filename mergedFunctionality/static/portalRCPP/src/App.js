@@ -8,6 +8,7 @@ import { RadioGroup } from '@atlaskit/radio';
 import { Box } from '@atlaskit/primitives';
 import { OptionsPropType } from '@atlaskit/radio/types';
 import { set } from 'lodash';
+
 const Content = styled.div`
   overflow: hidden;
 `;
@@ -27,21 +28,7 @@ function App() {
   const [optionsApps, setOptionsApps] = useState([]);
   const [error, setError] = useState({});
 
-
-
-
-  /**
-   * Fetches access data of the user by invoking the 'fetchAccess' function with the provided ID.
-   * @param {number} id - The ID of the data to fetch.
-   * @returns {Promise<Object>} - A promise that resolves to the fetched data.
-   */
-  const fetchData = async (id) => {
-    let context = await view.getContext();  
-    console.log(context);
-    
-    let qry = await invoke('fetchAccess', {id: {id}});
-    return await JSON.parse(qry);
-  }
+  
 
   /**
    * Populates the apps array with data.
@@ -58,14 +45,10 @@ function App() {
 
 
   useEffect(() => {
-    invoke("getOrgDetails")
     async function fetchDataAndPopulateApps() {
-      const userId =  (await view.getContext()).accountId;
-      setUserAccountId(userId);
-      const dataToPop = await fetchData(1001);
-      await populateApps(dataToPop);
-      const userIds =  await invoke('getOrgs');
-      console.log(JSON.parse(userIds));
+      const apps =  await invoke('getOrgs');
+      console.log(apps);
+      await populateApps(apps);
     }
     fetchDataAndPopulateApps();
   }, []);
@@ -138,9 +121,6 @@ function App() {
   }
 
   const onRadioChangeHandler = ({name, value}) => {
-    console.log(name, value);
-    console.log(optionsApps);
-
     const newFieldData = !!name ? {...fieldData, [name]: value} : fieldData;
     setField(newFieldData);
     const fields = [];

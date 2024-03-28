@@ -2,7 +2,7 @@ import Resolver from '@forge/resolver';
 const fetch = require('node-fetch');
 import api, { route } from "@forge/api";
 import { text } from 'express';
-
+// EDGE case perosn not in org
 const resolver = new Resolver();
 
 const api_token = 'b.p.geugies@student.utwente.nl:ATATT3xFfGF0wzAc7O6GF6SiuWPFEb_eYw6IX9ldKWZLkS83xnMw1nKZzd4kWH72xyV8o6VxYu7x7KyrqIJP8-WKu26kQ-_RQ8GY-ea4WvEHgZ4yZHISb6kF8VfdQDD0Lw7aCzp_XWUXmne1rku1wBhsF1NpSnqeLhkOlGDY5m9dxyKzM64PqD4=6350B172'
@@ -37,29 +37,7 @@ resolver.define('UpdateData', async (req) => {
     return "done";
 });
 
-resolver.define('fetchAccess', async (req) => {
-    let id = req.payload.id.id;
-    let dataqr;
-    //console.log(id)
-    let data = await api.fetch(
-        `https://bartgeugies.com/data?id=${id}`, {
-            method: 'GET'
-        }
-    )
-        .then(async response => {
-            await console.log(
-                `Response: ${response.status} ${response.statusText}`
-            );
-            dataqr = response.text();
 
-        })
-        .then(async text => console.log(text))
-        .catch(async err => await console.error(err));
-
-    console.log(await dataqr, "here");
-    return await dataqr;
-
-})
 
 
 async function getAllOrgs() {
@@ -82,9 +60,9 @@ async function getAllOrgs() {
         console.error(err);
     }
 }async function getOrgDetails(orgId) {
-    console.log("wtf")
+    console.log(orgId); 
     try {
-        const response = await fetch(`https://api.atlassian.com/jsm/csm/cloudid/8385de58-2977-4a3d-98c3-937a2d659fc3/api/v1/organization/1`, {
+        const response = await fetch(`https://api.atlassian.com/jsm/csm/cloudid/8385de58-2977-4a3d-98c3-937a2d659fc3/api/v1/organization/${orgId}`, {
             method: 'GET',
             headers: {'Authorization': `Basic ${Buffer.from(
                     api_token
@@ -96,7 +74,6 @@ async function getAllOrgs() {
         console.log(`Response: ${response.status} ${response.statusText}`);
         
         const text = await response.text();
-        console.log( await "wtf",text);
         return text
 
     } catch (err) {
@@ -104,13 +81,26 @@ async function getAllOrgs() {
     }
 }
 
-resolver.define('getOrgDetails', async (req) => {
-    console.log(await getOrgDetails(1))
-})
 
 
-    
 
+/**
+ * Finds the key in a Map object that corresponds to the given value.
+ *
+ * @param {Map} map - The Map object to search in.
+ * @param {*} value - The value to search for.
+ * @returns {*} The key that corresponds to the given value, or undefined if not found.
+ */
+function findKeyForValueInMap(map, value) {
+    console.log(map);
+    console.log(value);
+    for (var [key, val] of map.entries()) {
+        if (val.includes(value)) {
+            console.log("hello ",key);   
+            return key;
+        }
+}
+}
 
 /**
  * Retrieves the users in the specified organization.
@@ -118,6 +108,7 @@ resolver.define('getOrgDetails', async (req) => {
  * @returns {Promise<string>} - A promise that resolves to the response text.
  */
 async function getUsersInOrg(orgId) {
+    
     try {
         const response = await fetch(`https://bitincdev.atlassian.net/rest/servicedeskapi/organization/${orgId}/user`, {
             method: 'GET',
@@ -130,9 +121,7 @@ async function getUsersInOrg(orgId) {
         });
         console.log(`Response: ${response.status} ${response.statusText}`);
         const text = await response.text();
-
         return text
-
     } catch (err) {
         console.error(err);
     }
@@ -141,6 +130,9 @@ async function getUsersInOrg(orgId) {
 
 
 resolver.define("getOrgs", async (req) => {
+    
+    let userId = req.context.accountId;
+    
     let orgUserMap = new Map();
     let orgs = await getAllOrgs();
     orgs = JSON.parse(orgs);
@@ -153,8 +145,19 @@ resolver.define("getOrgs", async (req) => {
         }
         orgUserMap.set(org.id, userIds);
     }
-    const orgUserMapJson = JSON.stringify(Array.from(orgUserMap.entries()), null, 2);
-    return orgUserMapJson;
+
+    const orgId = findKeyForValueInMap(orgUserMap, userId);
+    let orgData = await getOrgDetails(await orgId);
+    console.log(await orgData);
+    orgData = JSON.parse(orgData);
+    
+    const detailList = orgData.details[0].values[0].split(", ");
+
+    const result = {
+        access: detailList
+    };
+
+    return result;
 })
 
 
