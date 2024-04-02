@@ -18,19 +18,17 @@ function App() {
   async function fetchData() {  
     let updateData = `{"fields":{`
     let context = await view.getContext();
-    console.log(context)
+    let key = context.extension.request.key;
     setKey(context.extension.request.key);
     let fields = context.extension.request.properties.value.fields
     for (var field of fields) { 
       switch (field.key) {
         case "customfield_10050":
           setApp(field.value);
-          console.log(field.value)
           updateData += `"${field.key}":"${field.value}",`
           break;
         case "customfield_10051":
           setMod(field.value);
-          console.log(typeof field.value)
           updateData += `"${field.key}":"${field.value}",`
           break;
         case "customfield_10052":
@@ -40,8 +38,11 @@ function App() {
       }
     }
     updateData += `}}`
+    
+    //setUpdateDataForge(updateData);
     setUpdateDataForge(updateData);
-    return updateData;
+    setKey(key);
+    return [updateData, key];
   }
 
 
@@ -51,25 +52,36 @@ function App() {
  * @function functionEdit
  * @returns {Promise<void>} A promise that resolves when the data is updated.
  */
-async function updateIssue(){
-  invoke ("UpdateData",{key: {key},data: {updateDataForge}});
+async function updateIssue(data,key){
+  invoke ("UpdateData",{key: {key},data: {data}});
 }
 
 useEffect(() => {
-  fetchData();
+  async function pageSetUp() {
+   
+    let  data  = await fetchData()
+    let processedData = data[0]
+    let keyS = data[1]
+    await updateIssue(processedData, keyS);
+
+    
+  }
+
+  pageSetUp(); 
 }, []);
 
   return (
     <div>
-      <h2>Context</h2>
+      {/* <h2>Context</h2>
       <button onClick={fetchData}>Get Context</button>
-      <button onClick={updateIssue}>Edit the issue </button>
+      <button onClick={updateIssue}>Edit the issue </button> */}
+      <h3>Version</h3>
+      <input disabled type="text"  id="nApp" name="lname" value={version}></input>
       <h3>App</h3>
       <input disabled type="text"  id="nApp" name="lname" value={app}></input>
       <h3>Module</h3>
       <input disabled type="text"  id="nApp" name="lname" value={mod}></input>
-      <h3>Version</h3>
-      <input disabled type="text"  id="nApp" name="lname" value={version}></input>
+      
       
     </div>
   );

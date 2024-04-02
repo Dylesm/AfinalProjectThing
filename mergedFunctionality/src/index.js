@@ -9,10 +9,9 @@ const api_token = 'b.p.geugies@student.utwente.nl:ATATT3xFfGF0wzAc7O6GF6SiuWPFEb
 
 resolver.define('UpdateData', async (req) => {
     let key = req.payload.key.key;
-    //console.log(key);
+    
 
-    let updatedData = req.payload.data.updateDataForge;
-
+    let updatedData = req.payload.data.data;
 
     await fetch(`https://bitincdev.atlassian.net/rest/api/2/issue/${key}`, {
         method: 'PUT',
@@ -60,7 +59,6 @@ async function getAllOrgs() {
         console.error(err);
     }
 }async function getOrgDetails(orgId) {
-    console.log(orgId); 
     try {
         const response = await fetch(`https://api.atlassian.com/jsm/csm/cloudid/8385de58-2977-4a3d-98c3-937a2d659fc3/api/v1/organization/${orgId}`, {
             method: 'GET',
@@ -92,11 +90,8 @@ async function getAllOrgs() {
  * @returns {*} The key that corresponds to the given value, or undefined if not found.
  */
 function findKeyForValueInMap(map, value) {
-    console.log(map);
-    console.log(value);
     for (var [key, val] of map.entries()) {
         if (val.includes(value)) {
-            console.log("hello ",key);   
             return key;
         }
 }
@@ -148,7 +143,7 @@ resolver.define("getOrgs", async (req) => {
 
     const orgId = findKeyForValueInMap(orgUserMap, userId);
     let orgData = await getOrgDetails(await orgId);
-    console.log(await orgData);
+
     orgData = JSON.parse(orgData);
     
     const detailList = orgData.details[0].values[0].split(", ");
