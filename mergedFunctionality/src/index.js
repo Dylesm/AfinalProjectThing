@@ -9,7 +9,7 @@ const api_token = 'b.p.geugies@student.utwente.nl:ATATT3xFfGF0wzAc7O6GF6SiuWPFEb
 
 resolver.define('UpdateData', async (req) => {
     let key = req.payload.key.key;
-    
+
 
     let updatedData = req.payload.data.data;
 
@@ -58,7 +58,9 @@ async function getAllOrgs() {
     } catch (err) {
         console.error(err);
     }
-}async function getOrgDetails(orgId) {
+}
+
+async function getOrgDetails(orgId) {
     try {
         const response = await fetch(`https://api.atlassian.com/jsm/csm/cloudid/8385de58-2977-4a3d-98c3-937a2d659fc3/api/v1/organization/${orgId}`, {
             method: 'GET',
@@ -103,7 +105,7 @@ function findKeyForValueInMap(map, value) {
  * @returns {Promise<string>} - A promise that resolves to the response text.
  */
 async function getUsersInOrg(orgId) {
-    
+
     try {
         const response = await fetch(`https://bitincdev.atlassian.net/rest/servicedeskapi/organization/${orgId}/user`, {
             method: 'GET',
@@ -123,11 +125,21 @@ async function getUsersInOrg(orgId) {
 }
 
 
+// Gets apps from an organization by OrgId
+// Returns a list of apps
+async function getAppsFromOrg(orgId) {
+    try {
+        let data = await getOrgDetails(orgId);
+        return JSON.parse(data).details[0].values[0].split(", ");
+    } catch (err) {
+        console.error(err);
+    }
+}
 
 resolver.define("getOrgs", async (req) => {
-    
+
     let userId = req.context.accountId;
-    
+
     let orgUserMap = new Map();
     let orgs = await getAllOrgs();
     orgs = JSON.parse(orgs);
@@ -142,17 +154,22 @@ resolver.define("getOrgs", async (req) => {
     }
 
     const orgId = findKeyForValueInMap(orgUserMap, userId);
-    let orgData = await getOrgDetails(await orgId);
+    // let orgData = await getOrgDetails(await orgId);
+    //
+    // orgData = JSON.parse(orgData);
+    //
+    //
+    // let detailList = orgData.details[0].values[0].split(", ");
 
-    orgData = JSON.parse(orgData);
-    
-    const detailList = orgData.details[0].values[0].split(", ");
+    let detailList = await getAppsFromOrg(orgId);
 
-    const result = {
+    if (detailList.length === 0) {
+        detailList = ["Test", "Boss"];
+    }
+
+    return {
         access: detailList
-    };
-
-    return result;
+    }; // Return Apps[]
 })
 
 

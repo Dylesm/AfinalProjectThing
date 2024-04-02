@@ -176,26 +176,6 @@ function App() {
 
   const ModulesField = 'customfield_10051'
 
-  // const StackModules = [
-  //   { name: ModulesField, value: 'Bookings', label: 'Bookings' },
-  //   { name: ModulesField, value: 'Relations', label: 'Relations' },
-  //   { name: ModulesField, value: 'Master Data', label: 'Master Data' },
-  //   { name: ModulesField, value: 'Truck planning', label: 'Truck planning' },
-  //   { name: ModulesField, value: 'Yard Managment', label: 'Yard Managment' },
-  //   { name: ModulesField, value: 'Stock Containers', label: 'Stock Containers' },
-  //   { name: ModulesField, value: 'Inbox', label: 'Inbox' },
-  //   { name: ModulesField, value: 'Outbox', label: 'Outbox' }
-  // ];
-  // const BosModules = [
-  //   { name: ModulesField, value: 'Cargo Planning', label: 'Cargo Planning' },
-  //   { name: ModulesField, value: 'Charters', label: 'Charters' },
-  //   { name: ModulesField, value: 'Control tower', label: 'Control tower' },
-  //   { name: ModulesField, value: 'Core', label: 'Core' },
-  //   { name: ModulesField, value: 'Inbox', label: 'Inbox' },
-  //   { name: ModulesField, value: 'Outbox', label: 'Outbox' },
-  //   { name: ModulesField, value: 'Invoicing', label: 'Invoicing' },
-  //   { name: ModulesField, value: 'Location Planning', label: 'Location Planning' }
-  // ];
 
   const StackModules = [
     { id: 'Bookings', name: 'Bookings' },
@@ -254,17 +234,6 @@ function App() {
     setTriggerLabelModule(optionName); // Update trigger label to reflect selected option
     debounceRadioOnChange({name: "customfield_10051", value: optionName});
   };
-
-  const headingstyle = xcss({
-    fontsize: '0.857143em',
-    fontstyle: 'inherit',
-    lineheight: '1.33333',
-    fontweight: 'var(--ds-font-weight-semibold, 600)',
-    color: 'var(--ds-text-subtle, #6B778C)',
-    display: 'inline-block',
-    margintop: '0px',
-    marginbottom: 'var(--ds-space-050, 4px)',
-})
 
 
   return (
