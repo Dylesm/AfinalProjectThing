@@ -5,13 +5,21 @@ import styled from 'styled-components';
 import Form, {Field, ErrorMessage} from '@atlaskit/form';
 import Textfield from '@atlaskit/textfield';
 import { RadioGroup } from '@atlaskit/radio';
-import { Box } from '@atlaskit/primitives';
+import { Box, xcss } from '@atlaskit/primitives';
 import { OptionsPropType } from '@atlaskit/radio/types';
 import { set } from 'lodash';
+import DropdownMenu, { DropdownItemRadioGroup, DropdownItemRadio } from '@atlaskit/dropdown-menu';
 
 const Content = styled.div`
   overflow: hidden;
 `;
+
+const boxStyles = xcss({
+  borderColor: 'color.border.discovery',
+  borderRadius: 'border.radius',
+  borderWidth: 'border.width',
+  padding: '10px'
+});
 
 const CUSTOM_FIELD_NAME = 'Custom Field';
 const MIN_LENGTH_LIMIT = 5
@@ -28,7 +36,14 @@ function App() {
   const [optionsApps, setOptionsApps] = useState([]);
   const [error, setError] = useState({});
 
-  
+  const [selected, setSelected] = useState('detail'); // Assuming 'detail' is the default selection
+  const [triggerLabel, setTriggerLabel] = useState('Apps'); // Default trigger label
+  const [selectedModule, setSelectedModule] = useState('detail'); // Assuming 'detail' is the default selection
+  const [triggerLabelModule, setTriggerLabelModule] = useState('Modules'); // Default trigger label
+
+
+
+
 
   /**
    * Populates the apps array with data.
@@ -38,7 +53,8 @@ function App() {
     let apps = [];
     for (let key of datas.access) {
       //custom field made in JSM to display the relevant App
-      apps.push({name: 'customfield_10050', value: key, label: key});
+      // apps.push({name: 'customfield_10050', value: key, label: key});
+      apps.push({id: key, name: key});
     }
     setOptionsApps(apps);
   }
@@ -121,6 +137,7 @@ function App() {
   }
 
   const onRadioChangeHandler = ({name, value}) => {
+    console.log('OnRadioChangeHandler Called')
     const newFieldData = !!name ? {...fieldData, [name]: value} : fieldData;
     setField(newFieldData);
     const fields = [];
@@ -132,7 +149,7 @@ function App() {
       isValid = validateCustomFields({
         fieldName: property,
         fieldValue: newFieldData[property],
-        minLength: MIN_LENGTH_LIMIT
+        minLength: 1
       }) && isValid;
     }
     // check radio button validation
@@ -158,25 +175,47 @@ function App() {
 
   const ModulesField = 'customfield_10051'
 
+  // const StackModules = [
+  //   { name: ModulesField, value: 'Bookings', label: 'Bookings' },
+  //   { name: ModulesField, value: 'Relations', label: 'Relations' },
+  //   { name: ModulesField, value: 'Master Data', label: 'Master Data' },
+  //   { name: ModulesField, value: 'Truck planning', label: 'Truck planning' },
+  //   { name: ModulesField, value: 'Yard Managment', label: 'Yard Managment' },
+  //   { name: ModulesField, value: 'Stock Containers', label: 'Stock Containers' },
+  //   { name: ModulesField, value: 'Inbox', label: 'Inbox' },
+  //   { name: ModulesField, value: 'Outbox', label: 'Outbox' }
+  // ];
+  // const BosModules = [
+  //   { name: ModulesField, value: 'Cargo Planning', label: 'Cargo Planning' },
+  //   { name: ModulesField, value: 'Charters', label: 'Charters' },
+  //   { name: ModulesField, value: 'Control tower', label: 'Control tower' },
+  //   { name: ModulesField, value: 'Core', label: 'Core' },
+  //   { name: ModulesField, value: 'Inbox', label: 'Inbox' },
+  //   { name: ModulesField, value: 'Outbox', label: 'Outbox' },
+  //   { name: ModulesField, value: 'Invoicing', label: 'Invoicing' },
+  //   { name: ModulesField, value: 'Location Planning', label: 'Location Planning' }
+  // ];
+
   const StackModules = [
-    { name: ModulesField, value: 'Bookings', label: 'Bookings' },
-    { name: ModulesField, value: 'Relations', label: 'Relations' },
-    { name: ModulesField, value: 'Master Data', label: 'Master Data' },
-    { name: ModulesField, value: 'Truck planning', label: 'Truck planning' },
-    { name: ModulesField, value: 'Yard Managment', label: 'Yard Managment' },
-    { name: ModulesField, value: 'Stock Containers', label: 'Stock Containers' },
-    { name: ModulesField, value: 'Inbox', label: 'Inbox' },
-    { name: ModulesField, value: 'Outbox', label: 'Outbox' }
+    { id: 'Bookings', name: 'Bookings' },
+    { id: 'Relations', name: 'Relations' },
+    { id: 'Master Data', name: 'Master Data' },
+    { id: 'Truck planning', name: 'Truck planning' },
+    { id: 'Yard Managment', name: 'Yard Managment' },
+    { id: 'Stock Containers', name: 'Stock Containers' },
+    { id: 'Inbox', name: 'Inbox' },
+    { id: 'Outbox', name: 'Outbox' }
   ];
+
   const BosModules = [
-    { name: ModulesField, value: 'Cargo Planning', label: 'Cargo Planning' },
-    { name: ModulesField, value: 'Charters', label: 'Charters' },
-    { name: ModulesField, value: 'Control tower', label: 'Control tower' },
-    { name: ModulesField, value: 'Core', label: 'Core' },
-    { name: ModulesField, value: 'Inbox', label: 'Inbox' },
-    { name: ModulesField, value: 'Outbox', label: 'Outbox' },
-    { name: ModulesField, value: 'Invoicing', label: 'Invoicing' },
-    { name: ModulesField, value: 'Location Planning', label: 'Location Planning' }
+    { id: 'Cargo Planning', name: 'Cargo Planning' },
+    { id: 'Charters', name: 'Charters' },
+    { id: 'Control tower', name: 'Control tower' },
+    { id: 'Core', name: 'Core' },
+    { id: 'Inbox', name: 'Inbox' },
+    { id: 'Outbox', name: 'Outbox' },
+    { id: 'Invoicing', name: 'Invoicing' },
+    { id: 'Location Planning', name: 'Location Planning' }
   ];
 
 
@@ -201,26 +240,71 @@ function App() {
     }
   }
 
+  // Handle selection
+  const handleOptionSelect = (optionId, optionName) => {
+    setSelected(optionId);
+    setTriggerLabel(optionName); // Update trigger label to reflect selected option
+    debounceRadioOnChange({name: "customfield_10050", value: optionName});
+    populateModules(optionName);
+  };
+
+  const handleModuleSelect = (optionId, optionName) => {
+    setSelectedModule(optionId);
+    setTriggerLabelModule(optionName); // Update trigger label to reflect selected option
+    debounceRadioOnChange({name: "customfield_10051", value: optionName});
+  };
+
+  const headingstyle = xcss({
+    fontsize: '0.857143em',
+    fontstyle: 'inherit',
+    lineheight: '1.33333',
+    fontweight: 'var(--ds-font-weight-semibold, 600)',
+    color: 'var(--ds-text-subtle, #6B778C)',
+    display: 'inline-block',
+    margintop: '0px',
+    marginbottom: 'var(--ds-space-050, 4px)',
+})
+
 
   return (
       <Content>
         <Form>
           {({formProps}) => (
               <form {...formProps}>
-                <Box>
-                  <h3>App</h3>
-                  <RadioGroup
-                      label="Apps"
-                      options={optionsApps}
-                      onChange={(event)=>{populateModules(event.target.value); ;debounceRadioOnChange({name: event.target.name, value: event.target.value})}}/>
-                </Box>
-                {moduleVisible &&  <Box>
-                  <h3>Modules</h3>
-                  <RadioGroup
-                      label="Modules"
-                      options={currentModule}
-                      onChange={(event)=>{debounceRadioOnChange({name: event.target.name, value: event.target.value})}}/>
-                </Box> }
+                <Box xcss={headingstyle}>
+                  <h5>Select App*</h5>
+                  <DropdownMenu label='Select App' trigger={triggerLabel}>
+                    <DropdownItemRadioGroup label='select app' id="customfield_10050">
+                      {optionsApps.map(option => (
+                          <DropdownItemRadio
+                              key={option.id}
+                              id={option.id}
+                              onClick={() => handleOptionSelect(option.id, option.name)}
+                              isSelected={selected === option.id}
+                          >
+                            {option.name}
+                          </DropdownItemRadio>
+                      ))}
+                    </DropdownItemRadioGroup>
+                  </DropdownMenu>
+                </Box >
+                {moduleVisible && <Box xcss={boxStyles}>
+                  <h5 >Select Module*</h5>
+                  <DropdownMenu trigger={triggerLabelModule}>
+                    <DropdownItemRadioGroup id="customfield_10050">
+                      {currentModule.map(option => (
+                          <DropdownItemRadio
+                              key={option.id}
+                              id={option.id}
+                              onClick={() => handleModuleSelect(option.id, option.name)}
+                              isSelected={selectedModule === option.id}
+                          >
+                            {option.name}
+                          </DropdownItemRadio>
+                      ))}
+                    </DropdownItemRadioGroup>
+                  </DropdownMenu>
+                </Box>}
 
                 <Field label='Version' name="customfield_10052">
                   {({fieldProps}) => (

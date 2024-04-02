@@ -5,6 +5,7 @@
   "homepage": ".",
   "dependencies": {
     "@atlaskit/css-reset": "^6.6.2",
+    "@atlaskit/dropdown-menu": "^12.8.4",
     "@atlaskit/form": "^9.0.7",
     "@atlaskit/primitives": "^5.1.2",
     "@atlaskit/radio": "^6.1.2",
