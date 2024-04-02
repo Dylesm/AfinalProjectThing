@@ -18,7 +18,8 @@ const boxStyles = xcss({
   borderColor: 'color.border.discovery',
   borderRadius: 'border.radius',
   borderWidth: 'border.width',
-  padding: '10px'
+  paddingBottom: '10px',
+  paddingTop: '15px'
 });
 
 const CUSTOM_FIELD_NAME = 'Custom Field';
@@ -271,10 +272,10 @@ function App() {
         <Form>
           {({formProps}) => (
               <form {...formProps}>
-                <Box xcss={headingstyle}>
-                  <h5>Select App*</h5>
-                  <DropdownMenu label='Select App' trigger={triggerLabel}>
-                    <DropdownItemRadioGroup label='select app' id="customfield_10050">
+                <Box xcss={boxStyles}>
+                  <h5 style={{fontSize:"0.85em", color:"#6B778C", fontWeight:"600",paddingBottom: '4px'}}>Select App*</h5>
+                  <DropdownMenu label='Select App' trigger={triggerLabel} >
+                    <DropdownItemRadioGroup label='select app' id="customfield_10050" >
                       {optionsApps.map(option => (
                           <DropdownItemRadio
                               key={option.id}
@@ -289,7 +290,7 @@ function App() {
                   </DropdownMenu>
                 </Box >
                 {moduleVisible && <Box xcss={boxStyles}>
-                  <h5 >Select Module*</h5>
+                  <h5 style={{fontSize:"0.85em", color:"#6B778C", fontWeight:"600",paddingBottom: '4px'}} >Select Module*</h5>
                   <DropdownMenu trigger={triggerLabelModule}>
                     <DropdownItemRadioGroup id="customfield_10050">
                       {currentModule.map(option => (

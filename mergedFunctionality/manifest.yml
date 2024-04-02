@@ -5,14 +5,12 @@ modules:
       resolver:
         function: rcpp-resolver
       viewportSize: large
-      title: mergedFunctionalityPropertyPanel
   jiraServiceManagement:portalRequestDetail:
     - key: mergedfunctionality-portalrd-panel
       resource: rd-main
       resolver:
         function: rd-resolver
       viewportSize: large
-      title: mergedFunctionalityRequestDetail
   function:
     - key: rcpp-resolver
       handler: index.handler
