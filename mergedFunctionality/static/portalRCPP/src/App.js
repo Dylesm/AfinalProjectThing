@@ -36,14 +36,10 @@ function App() {
   const [fieldData, setField] = useState({});
   const [optionsApps, setOptionsApps] = useState([]);
   const [error, setError] = useState({});
-
   const [selected, setSelected] = useState('detail'); // Assuming 'detail' is the default selection
   const [triggerLabel, setTriggerLabel] = useState('Apps'); // Default trigger label
   const [selectedModule, setSelectedModule] = useState('detail'); // Assuming 'detail' is the default selection
   const [triggerLabelModule, setTriggerLabelModule] = useState('Modules'); // Default trigger label
-
-
-
 
 
   /**
@@ -216,7 +212,9 @@ function App() {
         setCurrentModule(BosModules);
         return "BOSSED"
       default:
-        //onRadioChangeHandler({name: 'customfield_10051', value: "clear"});
+        debounceRadioOnChange({name: 'customfield_10051', value: ""});
+        console.log("No modules found for app: ", app);
+        console.log(fieldData);
         setModuleVisible(false);
     }
   }
