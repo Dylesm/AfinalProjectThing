@@ -10,9 +10,14 @@ function App() {
   const [version, setVersion] = useState('');
   const [key, setKey] = useState('');
 
-  const [headerStyle, setHeaderStyle] = useState({fontSize:"1.2em", color:"#6B778C", fontWeight:"550",paddingBottom: '4px'})
-  const [inputStyle, setInputStyle] = useState({backgroundColor:"#FFFFFF", border:'1px solid  #DFE1E6',height:'1.2em',paddingBottom:'4px',borderRadius:"3px", fontSize:"1em", color:"black", fontWeight:"500", width:"fit-content", textAlign:"center", verticalAlign:"middle"})
-
+  const [headerStyle, setHeaderStyle] = useState({fontSize:"1.2em", color:"#636363",backgroundColor:"#e6e6e6", fontWeight:"550",paddingBottom: '4px',alignItems: "center", textAlign:"center", verticalAlign:"middle",height:'1.2em',paddingBottom:'4px',paddingTop:'4px', width:'100%',borderRadiusLeft:'0px',  })
+  const [inputStyle, setInputStyle] = useState({backgroundColor:"#FFFFFF",height:'1.2em',paddingBottom:'4px',borderBottomRightRadius:"4px",borderBottomLeftRadius:"4px",paddingTop:'4px', fontSize:"1em", color:"black", fontWeight:"520",borderRadiusLeft:'4px', width:"fit-content",borderWidth:'0px',borderTop:'2px solid  #0074e0', textAlign:"center", verticalAlign:"middle"})
+  const [boxStyle, setBoxStyle] = useState({display: 'flex',
+  flexDirection: 'column',
+ margin: '0',
+ padding: 0,
+ justifyContent: "space-around",
+ alignItems: "center", border:'2px solid  #DFE1E6', borderRadius:"4px"})
   /**
    * Fetches data and updates the state variables.
    * @summary Adjust the custom field names to match the ones in your Jira instance.
@@ -76,25 +81,21 @@ useEffect(() => {
   return (
     <div style={{display:'flex', flexdDirection: 'row',justifyContent: "space-around"}}>
      
-     <div style={{display: 'flex',
-     flexDirection: 'column',
-    margin: '0',
-    padding: 0,
-    justifyContent: "space-around"
-     }}>
-      <h3 style={headerStyle} >Version</h3>
-      <input style={inputStyle}  disabled type="text"  id="nApp" name="lname" value={version}></input> 
-     </div>
-      <div>
+     
+      <div style={boxStyle}>
         <h3 style={headerStyle} >App</h3>
         <input style={inputStyle} disabled type="text"  id="nApp" name="lname" value={app}></input>
       </div>
       
-      <div>
+      <div style={boxStyle}>
         <h3 style={headerStyle} >Module</h3>
         <input style={inputStyle} disabled type="text"  id="nApp" name="lname" value={mod}></input>
       </div>
       
+      <div style={boxStyle}>
+      <h3 style={headerStyle} >Version</h3>
+      <input style={inputStyle}  disabled type="text"  id="nApp" name="lname" value={version}></input> 
+     </div>
       
       
     </div>
