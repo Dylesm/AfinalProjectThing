@@ -10,10 +10,7 @@ const resolver = new Resolver();
 
 resolver.define('UpdateData', async (req) => {
     let key = req.payload.key.key;
-
-
     let updatedData = req.payload.data.data;
-
     await fetch(`https://bitincdev.atlassian.net/rest/api/2/issue/${key}`, {
         method: 'PUT',
         headers: {
@@ -33,7 +30,6 @@ resolver.define('UpdateData', async (req) => {
         })
         .then(async text => await console.log(text))
         .catch(async err => await console.error(err));
-
     return "done";
 });
 
@@ -55,7 +51,6 @@ async function getAllOrgs() {
         console.log(`Response: ${response.status} ${response.statusText}`);
         const text = await response.text();
         return text
-
     } catch (err) {
         console.error(err);
     }
@@ -75,10 +70,8 @@ async function getOrgDetails(orgId) {
             }
         });
         console.log(`Response: ${response.status} ${response.statusText}`);
-        
         const text = await response.text();
         return text
-
     } catch (err) {
         console.error(err);
     }
@@ -108,7 +101,6 @@ function findKeyForValueInMap(map, value) {
  * @returns {Promise<string>} - A promise that resolves to the response text.
  */
 async function getUsersInOrg(orgId) {
-
     try {
         const response = await fetch(`https://bitincdev.atlassian.net/rest/servicedeskapi/organization/${orgId}/user`, {
             method: 'GET',
@@ -140,9 +132,7 @@ async function getAppsFromOrg(orgId) {
 }
 
 resolver.define("getOrgs", async (req) => {
-
     let userId = req.context.accountId;
-
     let orgUserMap = new Map();
     let orgs = await getAllOrgs();
     orgs = JSON.parse(orgs);
@@ -157,22 +147,13 @@ resolver.define("getOrgs", async (req) => {
     }
 
     const orgId = findKeyForValueInMap(orgUserMap, userId);
-    // let orgData = await getOrgDetails(await orgId);
-    //
-    // orgData = JSON.parse(orgData);
-    //
-    //
-    // let detailList = orgData.details[0].values[0].split(", ");
-
     let detailList = await getAppsFromOrg(orgId);
-
     if (detailList.length === 0) {
         detailList = ["Test", "Boss"];
     }
-
     return {
         access: detailList
-    }; // Return Apps[]
+    }; 
 })
 
 

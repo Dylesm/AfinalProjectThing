@@ -5,15 +5,15 @@ import { AppsField, ModuleField, VersionField } from './config';
 
 function App() {
   
-  const [updateDataForge, setUpdateDataForge] = useState('');
-  const [app, setApp] = useState('');
-  const [mod, setMod] = useState('');
-  const [version, setVersion] = useState('');
-  const [key, setKey] = useState('');
-  const [modVisibility, setModVisibility] = useState(false);
-  const [headerStyle, setHeaderStyle] = useState({fontSize:"1.2em", color:"#636363",backgroundColor:"#e6e6e6", fontWeight:"550",paddingBottom: '4px',alignItems: "center", textAlign:"center", verticalAlign:"middle",height:'1.2em',paddingBottom:'4px',paddingTop:'4px', width:'100%',borderRadiusLeft:'0px',  })
-  const [inputStyle, setInputStyle] = useState({backgroundColor:"#FFFFFF",height:'1.2em',paddingBottom:'4px',borderBottomRightRadius:"4px",borderBottomLeftRadius:"4px",paddingTop:'4px', fontSize:"1em", color:"black", fontWeight:"520",borderRadiusLeft:'4px', width:"fit-content",borderWidth:'0px',borderTop:'2px solid  #0074e0', textAlign:"center", verticalAlign:"middle"})
-  const [boxStyle, setBoxStyle] = useState({display: 'flex', flexDirection: 'column', margin: '0', padding: 0, justifyContent: "space-around", alignItems: "center", border:'2px solid  #DFE1E6', borderRadius:"4px"})
+const [updateDataForge, setUpdateDataForge] = useState('');
+const [app, setApp] = useState('');
+const [mod, setMod] = useState('');
+const [version, setVersion] = useState('');
+const [key, setKey] = useState('');
+const [modVisibility, setModVisibility] = useState(false);
+const [headerStyle, setHeaderStyle] = useState({fontSize:"1.2em", color:"#636363",backgroundColor:"#e6e6e6", fontWeight:"550",paddingBottom: '4px',alignItems: "center", textAlign:"center", verticalAlign:"middle",height:'1.2em',paddingBottom:'4px',paddingTop:'4px', width:'100%',borderRadiusLeft:'0px',  })
+const [inputStyle, setInputStyle] = useState({backgroundColor:"#FFFFFF",height:'1.2em',paddingBottom:'4px',borderBottomRightRadius:"4px",borderBottomLeftRadius:"4px",paddingTop:'4px', fontSize:"1em", color:"black", fontWeight:"520",borderRadiusLeft:'4px', width:"fit-content",borderWidth:'0px',borderTop:'2px solid  #0074e0', textAlign:"center", verticalAlign:"middle"})
+const [boxStyle, setBoxStyle] = useState({display: 'flex', flexDirection: 'column', margin: '0', padding: 0, justifyContent: "space-around", alignItems: "center", border:'2px solid  #DFE1E6', borderRadius:"4px"})
   
   
   
@@ -36,7 +36,6 @@ function App() {
           break;
         case ModuleField:
           if (field.value!= "") {
-            console.log(field.value)
             setModVisibility(true);
             setMod(field.value);
             updateData += `"${field.key}":"${field.value}",`
@@ -50,8 +49,6 @@ function App() {
       }
     }
     updateData += `}}`
-    
-    //setUpdateDataForge(updateData);
     setUpdateDataForge(updateData);
     setKey(key);
     return [updateData, key];
@@ -67,17 +64,13 @@ function App() {
 async function updateIssue(data,key){
   invoke ("UpdateData",{key: {key},data: {data}});
 }
-
 useEffect(() => {
   async function pageSetUp() {
     let  data  = await fetchData()
     let processedData = data[0]
     let keyS = data[1]
-    await updateIssue(processedData, keyS);
-
-    
+    await updateIssue(processedData, keyS);    
   }
-
   pageSetUp(); 
 }, []);
 

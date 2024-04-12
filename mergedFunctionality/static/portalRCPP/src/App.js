@@ -11,9 +11,7 @@ import { set } from 'lodash';
 import DropdownMenu, { DropdownItemRadioGroup, DropdownItemRadio } from '@atlaskit/dropdown-menu';
 import { AppsField, ModuleField, VersionField } from './config';
 
-const Content = styled.div`
-  overflow: hidden;
-`;
+const Content = styled.div`overflow: hidden;`;
 
 // Styling 
 const boxStyles = xcss({
@@ -29,13 +27,12 @@ const MIN_LENGTH_LIMIT = 5
 
 
 function App() {
-
   const [userAcountId, setUserAccountId] = useState(""); //user account ids
   const [moduleVisible, setModuleVisible] = useState(false); //module visibility
   const [currentModule, setCurrentModule] = useState([]); //current module
-  const [fieldData, setField] = useState({});
-  const [optionsApps, setOptionsApps] = useState([]);
-  const [error, setError] = useState({});
+  const [fieldData, setField] = useState({}); //Bridge data that is being transfered
+  const [optionsApps, setOptionsApps] = useState([]); 
+  const [error, setError] = useState({}); 
   const [selected, setSelected] = useState('detail'); // Assuming 'detail' is the default selection
   const [triggerLabel, setTriggerLabel] = useState('Apps'); // Default trigger label
   const [selectedModule, setSelectedModule] = useState('detail'); // Assuming 'detail' is the default selection
@@ -60,7 +57,6 @@ function App() {
   useEffect(() => {
     async function fetchDataAndPopulateApps() {
       const apps =  await invoke('getOrgs');
-      console.log(apps);
       await populateApps(apps);
     }
     fetchDataAndPopulateApps();
@@ -94,11 +90,9 @@ function App() {
     setField(newFieldData);
     const fields = [];
     let isValid = true;
-
     // manipulate form fields
     for (const property in newFieldData) {
       fields.push({key: property, value: newFieldData[property]});
-
       // check form validation
       isValid = validateCustomFields({
         fieldName: property,
@@ -139,7 +133,6 @@ function App() {
   }
 
   const onRadioChangeHandler = ({name, value}) => {
-    console.log('OnRadioChangeHandler Called')
     const newFieldData = !!name ? {...fieldData, [name]: value} : fieldData;
     setField(newFieldData);
     const fields = [];
@@ -166,7 +159,6 @@ function App() {
     // submit form data to forge bridge
     try {
       view.submit(formData);
-      console.log(formData);
     } catch (errorTrace) {
       console.log("Couldn't save custom field : ", errorTrace);
     }
@@ -222,8 +214,6 @@ function App() {
         return "BOSSED"
       default:
         debounceRadioOnChange({name: ModuleField, value: ""});
-        console.log("No modules found for app: ", app);
-        console.log(fieldData);
         setModuleVisible(false);
     }
   }
