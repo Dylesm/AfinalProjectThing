@@ -9,11 +9,13 @@ import { Box, xcss } from '@atlaskit/primitives';
 import { OptionsPropType } from '@atlaskit/radio/types';
 import { set } from 'lodash';
 import DropdownMenu, { DropdownItemRadioGroup, DropdownItemRadio } from '@atlaskit/dropdown-menu';
+import { AppsField, ModuleField, VersionField } from './config';
 
 const Content = styled.div`
   overflow: hidden;
 `;
 
+// Styling 
 const boxStyles = xcss({
   borderColor: 'color.border.discovery',
   borderRadius: 'border.radius',
@@ -25,8 +27,6 @@ const boxStyles = xcss({
 const CUSTOM_FIELD_NAME = 'Custom Field';
 const MIN_LENGTH_LIMIT = 5
 
-
-//@TODO make the module part dissapear while an app without 
 
 function App() {
 
@@ -84,6 +84,11 @@ function App() {
     return true;
   }
 
+  /**
+   * Handles the input change event.
+   *
+   * @param {Object} input - The input object containing the name and value of the input field.
+   */
   const onInputChangeHandler = ({name, value}) => {
     const newFieldData = !!name ? {...fieldData, [name]: value} : fieldData;
     setField(newFieldData);
@@ -101,7 +106,7 @@ function App() {
         minLength: MIN_LENGTH_LIMIT
       }) && isValid;
     }
-
+    //validates the field and creates an object that can be passed through the bridge
     const formData = {
       fields,
       isValid,
@@ -170,9 +175,13 @@ function App() {
 
   const debounceRadioOnChange = debounce(({name, value}) => onRadioChangeHandler({name, value}), 400);
 
-  const ModulesField = 'customfield_10051'
+
+  //Change the module based on the version 
+  const ModulesField = ModuleField
 
 
+
+  // Hardcoded modules for Stack and Bos
   const StackModules = [
     { id: 'Bookings', name: 'Bookings' },
     { id: 'Relations', name: 'Relations' },
@@ -212,7 +221,7 @@ function App() {
         setCurrentModule(BosModules);
         return "BOSSED"
       default:
-        debounceRadioOnChange({name: 'customfield_10051', value: ""});
+        debounceRadioOnChange({name: ModuleField, value: ""});
         console.log("No modules found for app: ", app);
         console.log(fieldData);
         setModuleVisible(false);
@@ -223,14 +232,14 @@ function App() {
   const handleOptionSelect = (optionId, optionName) => {
     setSelected(optionId);
     setTriggerLabel(optionName); // Update trigger label to reflect selected option
-    debounceRadioOnChange({name: "customfield_10050", value: optionName});
+    debounceRadioOnChange({name: AppsField, value: optionName});
     populateModules(optionName);
   };
 
   const handleModuleSelect = (optionId, optionName) => {
     setSelectedModule(optionId);
     setTriggerLabelModule(optionName); // Update trigger label to reflect selected option
-    debounceRadioOnChange({name: "customfield_10051", value: optionName});
+    debounceRadioOnChange({name: ModuleField, value: optionName});
   };
 
 
@@ -242,7 +251,7 @@ function App() {
                 <Box xcss={boxStyles}>
                   <h5 style={{fontSize:"0.85em", color:"#6B778C", fontWeight:"600",paddingBottom: '4px'}}>Select App*</h5>
                   <DropdownMenu label='Select App' trigger={triggerLabel} >
-                    <DropdownItemRadioGroup label='select app' id="customfield_10050" >
+                    <DropdownItemRadioGroup label='select app' id={AppsField} >
                       {optionsApps.map(option => (
                           <DropdownItemRadio
                               key={option.id}
@@ -259,7 +268,7 @@ function App() {
                 {moduleVisible && <Box xcss={boxStyles}>
                   <h5 style={{fontSize:"0.85em", color:"#6B778C", fontWeight:"600",paddingBottom: '4px'}} >Select Module*</h5>
                   <DropdownMenu trigger={triggerLabelModule}>
-                    <DropdownItemRadioGroup id="customfield_10050">
+                    <DropdownItemRadioGroup id={ModuleField}>
                       {currentModule.map(option => (
                           <DropdownItemRadio
                               key={option.id}
@@ -274,10 +283,10 @@ function App() {
                   </DropdownMenu>
                 </Box>}
 
-                <Field label='Version' name="customfield_10052">
+                <Field label='Version' name={VersionField} >
                   {({fieldProps}) => (
-                      <Fragment>
-                        <Textfield
+                      <Fragment >
+                        <Textfield  
                             {...fieldProps}
                             placeholder="Input version of your app"
                             onChange={(event) => debounceOnChange({name: event.target.name, value: event.target.value})}

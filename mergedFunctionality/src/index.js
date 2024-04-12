@@ -2,10 +2,11 @@ import Resolver from '@forge/resolver';
 const fetch = require('node-fetch');
 import api, { route } from "@forge/api";
 import { text } from 'express';
+import { api_token } from './creds';
 // EDGE case perosn not in org
 const resolver = new Resolver();
 
-const api_token = 'b.p.geugies@student.utwente.nl:ATATT3xFfGF0wzAc7O6GF6SiuWPFEb_eYw6IX9ldKWZLkS83xnMw1nKZzd4kWH72xyV8o6VxYu7x7KyrqIJP8-WKu26kQ-_RQ8GY-ea4WvEHgZ4yZHISb6kF8VfdQDD0Lw7aCzp_XWUXmne1rku1wBhsF1NpSnqeLhkOlGDY5m9dxyKzM64PqD4=6350B172'
+
 
 resolver.define('UpdateData', async (req) => {
     let key = req.payload.key.key;
@@ -60,6 +61,8 @@ async function getAllOrgs() {
     }
 }
 
+
+//TODO: COULD ID HAS TO BE PROVIDED BY THE FRONTEND
 async function getOrgDetails(orgId) {
     try {
         const response = await fetch(`https://api.atlassian.com/jsm/csm/cloudid/8385de58-2977-4a3d-98c3-937a2d659fc3/api/v1/organization/${orgId}`, {
