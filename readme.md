@@ -21,7 +21,7 @@ Add Custom fields to be modified by the app \
 - It is required to update the target fields in the customFields.js file of the project
 - Api Credentials have to be updated in the customFields.js [Generating api key](https://id.atlassian.com/manage-profile/security/api-tokens.)
 ### Plugin Permissions
-- Forge apps are scoped using a manifest.yaml file, the app has the appropriate scope but for information on the subject look [here](https://developer.atlassian.com/platform/forge/manifest-reference/permissions/).
+- Forge apps are scoped using a manifest.yaml file, the app has the appropriate scope and for further information on the subject look [here](https://developer.atlassian.com/platform/forge/manifest-reference/permissions/).
 
 ## Setting up organisations 
 Creating custom organistaions with the information necessary to work with the plugin \
