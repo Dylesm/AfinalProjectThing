@@ -45,8 +45,5 @@ permissions:
         - bitincdev.atlassian.net
         - bitincdev.atlassian.net/admin/v1/orgs
         - api.atlassian.com
-        - bartgeugies.com
-      client:
-        - bartgeugies.com
 app:
   id: ari:cloud:ecosystem::app/93927154-2902-48ba-b341-ba9d4e5aa1bb
