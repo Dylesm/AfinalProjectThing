@@ -57,10 +57,11 @@ async function getAllOrgs() {
 }
 
 
-//TODO: COULD ID HAS TO BE PROVIDED BY THE FRONTEND
-async function getOrgDetails(orgId) {
+async function getOrgDetails(orgId,cloudId) {
+    console.log(orgId, "testing org id ")
+    console.log(cloudId, "testing cloud id ");
     try {
-        const response = await fetch(`https://api.atlassian.com/jsm/csm/cloudid/8385de58-2977-4a3d-98c3-937a2d659fc3/api/v1/organization/${orgId}`, {
+        const response = await fetch(`https://api.atlassian.com/jsm/csm/cloudid/${cloudId}/api/v1/organization/${orgId}`, {
             method: 'GET',
             headers: {'Authorization': `Basic ${Buffer.from(
                     api_token
@@ -122,9 +123,9 @@ async function getUsersInOrg(orgId) {
 
 // Gets apps from an organization by OrgId
 // Returns a list of apps
-async function getAppsFromOrg(orgId) {
+async function getAppsFromOrg(orgId,cloudId) {
     try {
-        let data = await getOrgDetails(orgId);
+        let data = await getOrgDetails(orgId,cloudId);
         return JSON.parse(data).details[0].values[0].split(", ");
     } catch (err) {
         console.error(err);
@@ -133,6 +134,9 @@ async function getAppsFromOrg(orgId) {
 
 resolver.define("getOrgs", async (req) => {
     let userId = req.context.accountId;
+    console.log(req.context);
+    let cloudId = req.context.cloudId;
+    console.log(cloudId, "testing cloud id ");
     let orgUserMap = new Map();
     let orgs = await getAllOrgs();
     orgs = JSON.parse(orgs);
@@ -147,7 +151,7 @@ resolver.define("getOrgs", async (req) => {
     }
 
     const orgId = findKeyForValueInMap(orgUserMap, userId);
-    let detailList = await getAppsFromOrg(orgId);
+    let detailList = await getAppsFromOrg(orgId,cloudId);
     if (detailList.length === 0) {
         detailList = ["Test", "Boss"];
     }
