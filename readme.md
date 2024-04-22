@@ -1,8 +1,8 @@
 # Reactive Jira Tickets setup guide
 An application that dynamically generates and updates forms based on a client's privileges, ensuring they only have access to information they are authorized to view.
 ## Build, run, deploy
-- Run **npm run build** in both folders ***PortalRCPP*** and ***PortalRD***
 - Install **Forge** according to the [Jira Guide](https://developer.atlassian.com/platform/forge/getting-started/)
+- Run **npm run build** in both folders ***PortalRCPP*** and ***PortalRD***
 - Run **forge deploy** in the main folder of the whole app to deploy
 - Run **forge install (-e development/production)** in the main folder of the whole app to install in the Jira Enviroment ("-e" to chose between dev/prod) 
 ## Required settings
